@@ -12,25 +12,28 @@
     <link rel="stylesheet" href="assets/main.css">
 
     <script id="vertex-shader" type="x-shader/x-vertex">
-        attribute vec4 vPosition;
+
+        attribute  vec4 vPosition;
+        
         uniform mat4 modelViewMatrix;
-        varying vec4 fColor;
-
-        void main() {
-            gl_Position = modelViewMatrix * vPosition;
-            fColor = vec4(0.7, 0.7, 0.7, 1.0); // Use a fixed color for now
-}
-
-    </script>
-    
-    <script id="fragment-shader" type="x-shader/x-fragment">
+        uniform mat4 projectionMatrix;
+        
+        void main() 
+        {
+            gl_Position = projectionMatrix * modelViewMatrix * vPosition;
+        } 
+        </script>
+        
+        <script id="fragment-shader" type="x-shader/x-fragment">
+        
         precision mediump float;
-        varying vec4 fColor;
-
-        void main() {
-            gl_FragColor = fColor;
+        
+        void main()
+        {
+            gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+        
         }
-    </script>
+        </script>
 </head>
 <body>
     <div class="header">
@@ -38,30 +41,76 @@
     </div>
 
     <div class="main-container">
-        <!-- <div id="controls-container" class="controls-container">
-            <label for="carRotation">Car Rotation</label>
-            <input type="range" id="carRotation" min="0" max="360" value="180">
+        <div id="controls-container" class="controls-container">
+            <div id="slider0">
+                torso angle -180 <input id="slide" type="range" min="-180" max="180" step="10" value="0"/>180
+            </div><br/>
+                <div id="slider10">
+                head2 angle -180 <input id="slide" type="range"
+                 min="-180" max="180" step="10" value="0"
+                  />
+                 180
+                </div><br/>
+                
+                <div id="slider1">
+                head1 angle -180 <input id="slide" type="range"
+                 min="-180" max="180" step="10" value="0"
+                  />
+                 180
+                </div><br/>
+                
+                <div id="slider2">
+                left upper arm angle -180 <input id="slide" type="range"
+                 min="-180" max="180" step="10" value="0"
+                  />
+                 180
+                </div><br/>
+                <div id="slider3">
+                left lower arm angle -180 <input id="slide" type="range"
+                 min="-180" max="180" step="10" value="0"
+                  />
+                 180
+                </div><br/>
+                <div id="slider4">
+                right upper arm angle -180 <input id="slide" type="range"
+                 min="-180" max="180" step="10" value="0"
+                  />
+                 180
+                </div><br/>
+                <div id="slider5">
+                right lower arm angle -180 <input id="slide" type="range"
+                 min="-180" max="180" step="10" value="0"
+                  />
+                 180
+                </div><br/>
+                <div id="slider6">
+                left upper leg angle -180 <input id="slide" type="range"
+                 min="-180" max="180" step="10" value="0"
+                  />
+                 180
+                </div><br/>
+                <div id="slider7">
+                left lower leg angle -180 <input id="slide" type="range"
+                 min="-180" max="180" step="10" value="0"
+                  />
+                 180
+                </div><br/>
+                <div id="slider8">
+                right upper leg angle -180 <input id="slide" type="range"
+                 min="-180" max="180" step="10" value="0"
+                  />
+                 180
+                </div><br/>
+                
+                <div id="slider9">
+                right lower leg angle -180 <input id="slide" type="range"
+                 min="-180" max="180" step="10" value="0"
+                  />
+                 180
+                </div><br/>
+        </div>
         
-            <label for="bodyRotation">Body Rotation</label>
-            <input type="range" id="bodyRotation" min="0" max="360" value="180">
-        
-            <label for="roofRotation">Roof Rotation</label>
-            <input type="range" id="roofRotation" min="0" max="360" value="180">
-        
-            <label for="wheel1Rotation">Wheel 1 Rotation</label>
-            <input type="range" id="wheel1Rotation" min="0" max="360" value="180">
-        
-            <label for="wheel2Rotation">Wheel 2 Rotation</label>
-            <input type="range" id="wheel2Rotation" min="0" max="360" value="180">
-        
-            <label for="wheel3Rotation">Wheel 3 Rotation</label>
-            <input type="range" id="wheel3Rotation" min="0" max="360" value="180">
-        
-            <label for="wheel4Rotation">Wheel 4 Rotation</label>
-            <input type="range" id="wheel4Rotation" min="0" max="360" value="180">
-        </div> -->
-        
-        <div>
+        <div class="canvas-container">
             <canvas id="gl-canvas" width="1200" height="700">Oops ... your browser doesn't support the HTML5 canvas element</canvas>
         </div>
     </div>

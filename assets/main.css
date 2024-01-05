@@ -40,11 +40,23 @@ body {
     float: right;
   }
 
-canvas {
-  background-color: #AABCDE;
-}
+
 
 .controls-container {
-    height: 100%;
-    background-color: aqua;
+  margin: 0;
+  padding: 0;
+  width: 25%;
+  background-color: #f1f1f1;
+  position: fixed;
+  height: 100%;
+  overflow: auto;
+}
+
+.canvas-container {
+  margin-left: 30%;
+}
+
+canvas {
+  background-color: #AABCDE;
+  border: 2px solid black;
 }
