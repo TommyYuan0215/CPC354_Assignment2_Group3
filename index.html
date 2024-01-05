@@ -13,22 +13,20 @@
 
     <script id="vertex-shader" type="x-shader/x-vertex">
         attribute vec4 vPosition;
-        attribute vec4 vColor;
         uniform mat4 modelViewMatrix;
-        uniform mat4 viewMatrix; 
-        uniform mat4 projectionMatrix;
         varying vec4 fColor;
-    
+
         void main() {
-            gl_Position = projectionMatrix * viewMatrix * modelViewMatrix * vPosition;
-            fColor = vColor;
-        }
+            gl_Position = modelViewMatrix * vPosition;
+            fColor = vec4(0.7, 0.7, 0.7, 1.0); // Use a fixed color for now
+}
+
     </script>
     
     <script id="fragment-shader" type="x-shader/x-fragment">
         precision mediump float;
         varying vec4 fColor;
-    
+
         void main() {
             gl_FragColor = fColor;
         }
@@ -37,14 +35,10 @@
 <body>
     <div class="header">
         <span class="logo">3D Articulated Model</span>
-        <div class="header-right">
-          <a href="#home">Save Animation</a>
-          <a href="#contact">Load Animation</a>
-        </div>
     </div>
 
     <div class="main-container">
-        <div id="controls-container" class="controls-container">
+        <!-- <div id="controls-container" class="controls-container">
             <label for="carRotation">Car Rotation</label>
             <input type="range" id="carRotation" min="0" max="360" value="180">
         
@@ -65,7 +59,7 @@
         
             <label for="wheel4Rotation">Wheel 4 Rotation</label>
             <input type="range" id="wheel4Rotation" min="0" max="360" value="180">
-        </div>
+        </div> -->
         
         <div>
             <canvas id="gl-canvas" width="1200" height="700">Oops ... your browser doesn't support the HTML5 canvas element</canvas>

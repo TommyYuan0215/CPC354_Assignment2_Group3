@@ -9,6 +9,10 @@
 //  Helper functions
 //
 
+function identity() {
+    return mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+}
+
 function _argumentsToArray( args )
 {
     return [].concat.apply( [], Array.prototype.slice.apply(args) );
