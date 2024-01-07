@@ -1,3 +1,4 @@
+// We use figure.js from textbook to modify file.
 
 var canvas;
 var gl;
@@ -36,6 +37,9 @@ var leftLowerLegId = 7;
 var rightUpperLegId = 8;
 var rightLowerLegId = 9;
 
+var GLOBAL_ANGLE_ID = 10;
+var GLOBAL_X_COORDINATE = 11;
+var GLOBAL_Y_COORDINATE = 12;
 
 var torsoHeight = 5.0;
 var torsoWidth = 1.0;
@@ -290,13 +294,13 @@ function cube()
 
 window.onload = function init() {
 
-    canvas = document.getElementById( "gl-canvas" );
+    canvas = document.getElementById("gl-canvas");
     
     gl = WebGLUtils.setupWebGL( canvas );
     if ( !gl ) { alert( "WebGL isn't available" ); }
     
     gl.viewport( 0, 0, canvas.width, canvas.height );
-    gl.clearColor( 1.0, 1.0, 1.0, 1.0 );
+    gl.clearColor(0, 0, 0, 0);
     
     //
     //  Load shaders and initialize attribute buffers
@@ -307,7 +311,8 @@ window.onload = function init() {
 
     instanceMatrix = mat4();
     
-    projectionMatrix = ortho(-10.0,10.0,-10.0, 10.0,-10.0,10.0);
+
+    projectionMatrix = ortho(-40.0, 40.0, -30.0, 30.0, -40.0, 40.0);
     modelViewMatrix = mat4();
 
         
@@ -326,53 +331,122 @@ window.onload = function init() {
     var vPosition = gl.getAttribLocation( program, "vPosition" );
     gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
     gl.enableVertexAttribArray( vPosition );
+
+    // Initial State for each of the output value 
+    document.getElementById("torso_output").textContent = 0;
+    document.getElementById("head1_output").textContent = 0;
+    document.getElementById("head2_output").textContent = 0;
+    document.getElementById("leftupperarm_output").textContent = 0;
+    document.getElementById("leftlowerarm_output").textContent = 0;
+    document.getElementById("rightupperarm_output").textContent = 0;
+    document.getElementById("rightlowerarm_output").textContent = 0;
+    document.getElementById("leftupperleg_output").textContent = 0;
+    document.getElementById("leftlowerleg_output").textContent = 0;
+    document.getElementById("rightupperleg_output").textContent = 0;
+    document.getElementById("rightlowerleg_output").textContent = 0;
+    document.getElementById("positionX_output").textContent = 0;
+    document.getElementById("positionY_output").textContent = 0;
     
-        document.getElementById("slider0").onchange = function() {
-        theta[torsoId ] = event.srcElement.value;
+    // On change function for each of the hierarchical model
+    document.getElementById("slider0").onchange = function() {
+        SliderValue = event.srcElement.value;
+        theta[torsoId ] = SliderValue;
+        document.getElementById("torso_output").textContent = SliderValue;
         initNodes(torsoId);
     };
-        document.getElementById("slider1").onchange = function() {
-        theta[head1Id] = event.srcElement.value;
+
+    document.getElementById("slider1").onchange = function() {
+        SliderValue = event.srcElement.value;
+        theta[head1Id] = SliderValue;
+        document.getElementById("head1_output").textContent = SliderValue;
         initNodes(head1Id);
     };
 
     document.getElementById("slider2").onchange = function() {
-         theta[leftUpperArmId] = event.srcElement.value;
-         initNodes(leftUpperArmId);
+        SliderValue = event.srcElement.value;
+        theta[leftUpperArmId] = SliderValue;
+        document.getElementById("leftupperarm_output").textContent = SliderValue;
+        initNodes(leftUpperArmId);
     };
+
     document.getElementById("slider3").onchange = function() {
-         theta[leftLowerArmId] =  event.srcElement.value;
-         initNodes(leftLowerArmId);
+        SliderValue = event.srcElement.value;
+        theta[leftLowerArmId] =  SliderValue;
+        document.getElementById("leftlowerarm_output").textContent = SliderValue;
+        initNodes(leftLowerArmId);
     };
      
-        document.getElementById("slider4").onchange = function() {
-        theta[rightUpperArmId] = event.srcElement.value;
+    document.getElementById("slider4").onchange = function() {
+        SliderValue = event.srcElement.value;
+        theta[rightUpperArmId] = SliderValue;
+        document.getElementById("rightupperarm_output").textContent = SliderValue;
         initNodes(rightUpperArmId);
     };
+
     document.getElementById("slider5").onchange = function() {
-         theta[rightLowerArmId] =  event.srcElement.value;
-         initNodes(rightLowerArmId);
+        SliderValue = event.srcElement.value;
+        theta[rightLowerArmId] =  SliderValue;
+        document.getElementById("rightlowerarm_output").textContent = SliderValue;
+        initNodes(rightLowerArmId);
     };
-        document.getElementById("slider6").onchange = function() {
-        theta[leftUpperLegId] = event.srcElement.value;
+
+    document.getElementById("slider6").onchange = function() {
+        SliderValue = event.srcElement.value;
+        theta[leftUpperLegId] = SliderValue;
+        document.getElementById("leftupperleg_output").textContent = SliderValue;
         initNodes(leftUpperLegId);
     };
+
     document.getElementById("slider7").onchange = function() {
-         theta[leftLowerLegId] = event.srcElement.value;
-         initNodes(leftLowerLegId);
+        SliderValue = event.srcElement.value;
+        theta[leftLowerLegId] = SliderValue;
+        document.getElementById("leftlowerleg_output").textContent = SliderValue;
+        initNodes(leftLowerLegId);
     };
+
     document.getElementById("slider8").onchange = function() {
-         theta[rightUpperLegId] =  event.srcElement.value;
-         initNodes(rightUpperLegId);
+        SliderValue = event.srcElement.value;
+        theta[rightUpperLegId] =  SliderValue;
+        document.getElementById("rightupperleg_output").textContent = SliderValue;
+        initNodes(rightUpperLegId);
     };
-        document.getElementById("slider9").onchange = function() {
-        theta[rightLowerLegId] = event.srcElement.value;
+
+    document.getElementById("slider9").onchange = function() {
+        SliderValue = event.srcElement.value;
+        theta[rightLowerLegId] = SliderValue;
+        document.getElementById("rightlowerleg_output").textContent = SliderValue;
         initNodes(rightLowerLegId);
     };
+
     document.getElementById("slider10").onchange = function() {
-         theta[head2Id] = event.srcElement.value;
-         initNodes(head2Id);
+        SliderValue = event.srcElement.value;
+        theta[head2Id] = SliderValue;
+        document.getElementById("head2_output").textContent = SliderValue;
+        initNodes(head2Id);
     };
+
+    document.getElementById("slider11").onchange = function() {
+        SliderValue = event.srcElement.value;
+        theta[GLOBAL_ANGLE_ID] = SliderValue;
+        document.getElementById("global_rotation_output").textContent = SliderValue;
+        initNodes(torsoId);
+      };
+    
+      document.getElementById("slider12").onchange = function() {
+        SliderValue = event.srcElement.value - 400;
+        theta[GLOBAL_X_COORDINATE] = SliderValue;
+        gl.viewport(0 + theta[GLOBAL_X_COORDINATE], 0 + theta[GLOBAL_Y_COORDINATE], canvas.width, canvas.height);
+        document.getElementById("positionX_output").textContent = SliderValue;
+        initNodes(torsoId);
+      };
+    
+      document.getElementById("slider13").onchange = function() {
+        SliderValue = event.srcElement.value - 400;
+        theta[GLOBAL_Y_COORDINATE] = SliderValue;
+        gl.viewport(0 + theta[GLOBAL_X_COORDINATE], 0 + theta[GLOBAL_Y_COORDINATE], canvas.width, canvas.height);
+        document.getElementById("positionY_output").textContent = SliderValue;
+        initNodes(torsoId);
+      };
 
     for(i=0; i<numNodes; i++) initNodes(i);
     
@@ -381,7 +455,6 @@ window.onload = function init() {
 
 
 var render = function() {
-
     gl.clear( gl.COLOR_BUFFER_BIT );
     traverse(torsoId);
     requestAnimFrame(render);
