@@ -3,9 +3,9 @@ body {
 }
 
 .header {
-    overflow: hidden;
-    background-image: linear-gradient(red, yellow);
-    padding: 20px 10px;
+  overflow: hidden;
+  background-image: linear-gradient(red, yellow);
+  padding: 20px 10px;
 }
 
 .header a {
@@ -41,9 +41,15 @@ body {
   }
 
 .controls-container {
+  top: 80px;
+  bottom: 0;
   padding: 2% 2%;
+  width: 20%;
+  float: left;
+  position: fixed;
   background-color: #f1f1f1;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y:scroll;
 }
 
 /*speed control function*/
@@ -93,6 +99,7 @@ body {
 }
 
 .canvas-container {
+  margin:0 0 0 20%;
   background-image: url('../img/landscape1.gif');
   background-repeat: no-repeat;
   background-repeat: no-repeat;
