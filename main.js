@@ -41,24 +41,26 @@ var GLOBAL_ANGLE_ID = 10;
 var GLOBAL_X_COORDINATE = 11;
 var GLOBAL_Y_COORDINATE = 12;
 
-var torsoHeight = 5.0;
-var torsoWidth = 1.0;
+var torsoHeight = 6.0;
+var torsoWidth = 2.0;
 var upperArmHeight = 3.0;
 var lowerArmHeight = 2.0;
 var upperArmWidth  = 0.5;
-var lowerArmWidth  = 0.5;
+var lowerArmWidth  = 0.4;
 var upperLegWidth  = 0.5;
-var lowerLegWidth  = 0.5;
+var lowerLegWidth  = 0.4;
 var lowerLegHeight = 2.0;
 var upperLegHeight = 3.0;
-var headHeight = 1.5;
+var headHeight = 2.0;
 var headWidth = 1.0;
 
 var numNodes = 10;
 var numAngles = 11;
 var angle = 0;
 
-var theta = [0, 0, 0, 0, 0, 0, 180, 0, 180, 0, 0];
+// TorsoId, head1, left upper arm, left lower arm, right upper arm, right lower arm, left upper leg, left lower leg, 
+// right upper leg, right lower leg, head2
+var theta = [60, 0, -160, 60, 160, -60, -180, 10, 180, -10, 0]; 
 
 var numVertices = 24;
 
@@ -104,8 +106,9 @@ function initNodes(Id) {
     switch(Id) {
     
     case torsoId:
-    
-    m = rotate(theta[torsoId], 0, 1, 0 );
+
+    m = rotate(theta[GLOBAL_ANGLE_ID], 0, 0, 1);
+    m = mult(m, rotate(theta[torsoId], 0, 1, 0 ));
     figure[torsoId] = createNode( m, torso, null, headId );
     break;
 
@@ -333,25 +336,26 @@ window.onload = function init() {
     gl.enableVertexAttribArray( vPosition );
 
     // Initial State for each of the output value 
-    document.getElementById("torso_output").textContent = 0;
+    document.getElementById("torsoY_output").textContent = 60;
     document.getElementById("head1_output").textContent = 0;
     document.getElementById("head2_output").textContent = 0;
-    document.getElementById("leftupperarm_output").textContent = 0;
-    document.getElementById("leftlowerarm_output").textContent = 0;
-    document.getElementById("rightupperarm_output").textContent = 0;
-    document.getElementById("rightlowerarm_output").textContent = 0;
-    document.getElementById("leftupperleg_output").textContent = 0;
-    document.getElementById("leftlowerleg_output").textContent = 0;
-    document.getElementById("rightupperleg_output").textContent = 0;
-    document.getElementById("rightlowerleg_output").textContent = 0;
+    document.getElementById("leftupperarm_output").textContent = -160;
+    document.getElementById("leftlowerarm_output").textContent = 60;
+    document.getElementById("rightupperarm_output").textContent = 160;
+    document.getElementById("rightlowerarm_output").textContent = -60;
+    document.getElementById("leftupperleg_output").textContent = 180;
+    document.getElementById("leftlowerleg_output").textContent = 10;
+    document.getElementById("rightupperleg_output").textContent = 180;
+    document.getElementById("rightlowerleg_output").textContent = -10;
+    document.getElementById("global_rotation_output").textContent = 0;
     document.getElementById("positionX_output").textContent = 0;
     document.getElementById("positionY_output").textContent = 0;
     
     // On change function for each of the hierarchical model
     document.getElementById("slider0").onchange = function() {
         SliderValue = event.srcElement.value;
-        theta[torsoId ] = SliderValue;
-        document.getElementById("torso_output").textContent = SliderValue;
+        theta[torsoId] = SliderValue;
+        document.getElementById("torsoY_output").textContent = SliderValue;
         initNodes(torsoId);
     };
 
