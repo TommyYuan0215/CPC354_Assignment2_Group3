@@ -1,3 +1,17 @@
+document.addEventListener("DOMContentLoaded", function() {
+    // Select the splash screen element
+    var splashScreen = document.getElementById("splash-screen");
+    var amHome = document.getElementById("articulated-model-home");
+
+    // Hide the splash screen after a delay (e.g., 2000 milliseconds or 2 seconds)
+    setTimeout(function() {
+        splashScreen.style.display = "none";
+        // Additional logic or code can be added here for what should happen after the splash screen disappears
+        amHome.style.display = "block";
+    }, 1000);
+
+})
+
 // We use figure.js from textbook to modify file.
 
 var canvas;

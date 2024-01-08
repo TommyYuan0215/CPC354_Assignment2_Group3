@@ -2,6 +2,53 @@ body {
     margin: auto;
 }
 
+.splashscreen {
+  position: absolute;
+  background-color: white;
+  background-image: url('../img/header.jpg');
+  background-repeat: no-repeat;
+  padding: 150px 180px;
+  text-align: center;
+  border: 1px solid black;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+}
+
+.splashscreen h2 {
+  color: white;
+  font-size: 32px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: bold;
+}
+
+.splashscreen .group {
+  position: fixed;
+  bottom: 6px;
+  right: 12px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-style: italic;
+}
+
+.articulatedmodel_home {
+  display: none;
+}
+
+.zoomeffect {
+	-webkit-animation: zoomin 0s ease-in;
+	animation: zoomin 1s ease-in;	
+}
+
+@keyframes zoomin {
+	0% {
+		transform: scale(0);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
 .header {
   overflow: hidden;
   /* background-image: linear-gradient(red, yellow); */
