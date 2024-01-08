@@ -108,6 +108,7 @@ function initNodes(Id) {
     case torsoId:
 
     m = rotate(theta[GLOBAL_ANGLE_ID], 0, 0, 1);
+    m = mult(m, rotate(theta[torsoId + 1], 1, 0, 0));
     m = mult(m, rotate(theta[torsoId], 0, 1, 0 ));
     figure[torsoId] = createNode( m, torso, null, headId );
     break;
@@ -336,6 +337,7 @@ window.onload = function init() {
     gl.enableVertexAttribArray( vPosition );
 
     // Initial State for each of the output value 
+    document.getElementById("torsoX_output").textContent = 0;
     document.getElementById("torsoY_output").textContent = 60;
     document.getElementById("head1_output").textContent = 0;
     document.getElementById("head2_output").textContent = 0;
@@ -449,6 +451,13 @@ window.onload = function init() {
         theta[GLOBAL_Y_COORDINATE] = SliderValue;
         gl.viewport(0 + theta[GLOBAL_X_COORDINATE], 0 + theta[GLOBAL_Y_COORDINATE], canvas.width, canvas.height);
         document.getElementById("positionY_output").textContent = SliderValue;
+        initNodes(torsoId);
+      };
+
+      document.getElementById("slider14").onchange = function() {
+        SliderValue = event.srcElement.value;
+        theta[torsoId + 1] = SliderValue;
+        document.getElementById("torsoX_output").textContent = SliderValue;
         initNodes(torsoId);
       };
 

@@ -12,6 +12,9 @@
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
 
+    <!-- JQuery link to run basic function-->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
     <script id="vertex-shader" type="x-shader/x-vertex">
 
         attribute  vec4 vPosition;
@@ -42,108 +45,163 @@
     </div>
 
     <div class="main-container">
-        <div id="controls-container" class="controls-container">
-            <h5>Hierarchical Model Angle</h5>
-            <hr>
-            <div class="row">
-                <div class="col-12">
-                    <div id="slider11">
-                        <label for="global_rotation" class="title">Global Rotation Angle :</label><output class="control_slider_bubble" id="global_rotation_output"></output>
-                        <br>
-                        <input id="slide" class="control_silder" type="range" min="-180" max="180" step="10" value="0"/>
-                    </div>
-    
-                    <div id="slider12">
-                        <label for="positionX" class="title">Position X :</label><output class="control_slider_bubble" id="positionX_output"></output>
-                        <br>
-                        <input id="slide" class="control_silder" type="range" min="-100" max="800" step="10" value="400"/>
-                    </div>
-    
-                    <div id="slider13">
-                        <label for="positionY" class="title">Position Y :</label><output class="control_slider_bubble" id="positionY_output"></output>
-                        <br>
-                        <input id="slide" class="control_silder" type="range" min="-100" max="800" step="10" value="400"/>
-                    </div>
-                </div>
-            </div>
-            <br><hr>
-            <div class="row">
-                <div class="col-12">
-                    <div id="slider0">
-                        <label for="torso" class="title">Torso Y-axis Angle :</label><output class="control_slider_bubble" id="torsoY_output"></output>
-                        <br>
-                        <input id="slide" class="control_silder" type="range" min="-180" max="180" step="10" value="60"/>
-                    </div>
+        <div id="controls-container" class="controls-container">      
+            <ul class="submenu" onwheel="handleMouseWheel(event)">
+                <li data-content="hierarchical" class="active" onclick="showContent('hierarchical')">Hierarchical Modelling</li>
+                <li data-content="lightsource" onclick="showContent('lightsource')">Light Sources</li>
+                <li data-content="material" onclick="showContent('material')">Material Properties</li>
+                <li data-content="viewshading" onclick="showContent('viewshading')">View & Shading</li>
+            </ul>
+            <marquee behavior="scroll" scrollamount="4"><b>Note:</b> Use the scroll wheel to move the submenu from left to right.</marquee>
+            <div class="hierarchical">
+                <hr>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="slider11">
+                            <label for="global_rotation" class="title">Global Rotation Angle (Z-axis) :</label><output class="control_slider_bubble" id="global_rotation_output"></output>
+                            <br>
+                            <input id="slide" class="control_silder" type="range" min="-180" max="180" step="10" value="0"/>
+                        </div>
         
-                    <div id="slider1">
-                        <label for="torso" class="title">Head Top & Bottom Angle :</label><output class="control_slider_bubble" id="head1_output"></output>
-                        <br>
-                        <input id="slide" class="control_silder" type="range" min="-50" max="50" step="10" value="0" />
-                    </div>
+                        <div id="slider12">
+                            <label for="positionX" class="title">Global Position X :</label><output class="control_slider_bubble" id="positionX_output"></output>
+                            <br>
+                            <input id="slide" class="control_silder" type="range" min="-100" max="800" step="10" value="400"/>
+                        </div>
         
-                    <div id="slider10">
-                        <label for="head2" class="title">Head Left & Right Angle :</label><output class="control_slider_bubble" id="head2_output"></output>
-                        <br>
-                        <input id="slide" class="control_silder" type="range" min="-180" max="180" step="10" value="0"/>
+                        <div id="slider13">
+                            <label for="positionY" class="title">Global Position Y :</label><output class="control_slider_bubble" id="positionY_output"></output>
+                            <br>
+                            <input id="slide" class="control_silder" type="range" min="-100" max="800" step="10" value="400"/>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <br><hr>
-            <div class="row">
-                <div class="col-12">
-                    <div id="slider2">
-                        <label for="leftupperarm" class="title">Left Upper Arm Angle :</label><output class="control_slider_bubble" id="leftupperarm_output"></output>
-                        <br>
-                        <input id="slide" class="control_silder" type="range" min="-180" max="60" step="10" value="-160"/>
-                    </div>
-    
-                    <div id="slider3">
-                        <label for="leftlowerarm" class="title">Left Lower Arm Angle :</label><output class="control_slider_bubble" id="leftlowerarm_output"></output>
-                        <br>
-                        <input id="slide" class="control_silder" type="range" min="-60" max="60" step="10" value="60" />
-                    </div>
-    
-                    <div id="slider4" >
-                        <label for="rightupperarm" class="title">Right Upper Arm Angle :</label><output class="control_slider_bubble" id="rightupperarm_output"></output>
-                        <br>
-                        <input id="slide" class="control_silder" type="range" min="-60" max="180" step="10" value="160" />
-                    </div>
-    
-                    <div id="slider5">
-                        <label for="rightlowerarm" class="title">Right Lower Arm Angle :</label><output class="control_slider_bubble" id="rightlowerarm_output"></output>
-                        <br>
-                        <input id="slide" class="control_silder" type="range" min="-60" max="60" step="10" value="-60"/>
+                <br><hr>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="slider14">
+                            <label for="torso1" class="title">Torso X-axis Angle :</label><output class="control_slider_bubble" id="torsoX_output"></output>
+                            <br>
+                            <input id="slide" class="control_silder" type="range" min="-180" max="180" step="10" value="0"/>
+                        </div>
+
+                        <div id="slider0">
+                            <label for="torso" class="title">Torso Y-axis Angle :</label><output class="control_slider_bubble" id="torsoY_output"></output>
+                            <br>
+                            <input id="slide" class="control_silder" type="range" min="-180" max="180" step="10" value="60"/>
+                        </div>
+            
+                        <div id="slider1">
+                            <label for="torso" class="title">Head Top & Bottom Angle :</label><output class="control_slider_bubble" id="head1_output"></output>
+                            <br>
+                            <input id="slide" class="control_silder" type="range" min="-50" max="50" step="10" value="0" />
+                        </div>
+            
+                        <div id="slider10">
+                            <label for="head2" class="title">Head Left & Right Angle :</label><output class="control_slider_bubble" id="head2_output"></output>
+                            <br>
+                            <input id="slide" class="control_silder" type="range" min="-180" max="180" step="10" value="0"/>
+                        </div>
                     </div>
                 </div>
+                <br><hr>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="slider2">
+                            <label for="leftupperarm" class="title">Left Upper Arm Angle :</label><output class="control_slider_bubble" id="leftupperarm_output"></output>
+                            <br>
+                            <input id="slide" class="control_silder" type="range" min="-180" max="60" step="10" value="-160"/>
+                        </div>
+        
+                        <div id="slider3">
+                            <label for="leftlowerarm" class="title">Left Lower Arm Angle :</label><output class="control_slider_bubble" id="leftlowerarm_output"></output>
+                            <br>
+                            <input id="slide" class="control_silder" type="range" min="-60" max="60" step="10" value="60" />
+                        </div>
+        
+                        <div id="slider4" >
+                            <label for="rightupperarm" class="title">Right Upper Arm Angle :</label><output class="control_slider_bubble" id="rightupperarm_output"></output>
+                            <br>
+                            <input id="slide" class="control_silder" type="range" min="-60" max="180" step="10" value="160" />
+                        </div>
+        
+                        <div id="slider5">
+                            <label for="rightlowerarm" class="title">Right Lower Arm Angle :</label><output class="control_slider_bubble" id="rightlowerarm_output"></output>
+                            <br>
+                            <input id="slide" class="control_silder" type="range" min="-60" max="60" step="10" value="-60"/>
+                        </div>
+                    </div>
+                </div>
+                    
+                <div class="row">
+                    <div class="col-12">
+                        <div id="slider6">
+                            <label for="leftupperleg" class="title">Left Upper Leg Angle :</label><output class="control_slider_bubble" id="leftupperleg_output"></output>
+                            <br>
+                            <input id="slide" class="control_silder" type="range"min="-180" max="-30" step="10" value="-180" />
+                        </div>
+        
+                        <div id="slider7">
+                            <label for="leftlowerleg" class="title">Left Lower Leg Angle :</label><output class="control_slider_bubble" id="leftlowerleg_output"></output>
+                            <br>
+                            <input id="slide" class="control_silder" type="range" min="-60" max="60" step="10" value="10" />
+                        </div>
+        
+                        <div id="slider8">
+                            <label for="rightupperleg" class="title">Right Upper Leg Angle :</label><output class="control_slider_bubble" id="rightupperleg_output"></output>
+                            <br>
+                            <input id="slide" class="control_silder" type="range" min="30" max="180" step="10" value="180" />
+                        </div>
+        
+                        <div id="slider9">
+                            <label for="rightlowerleg" class="title">Right Lower Leg Angle :</label><output class="control_slider_bubble" id="rightlowerleg_output"></output>
+                            <br>
+                            <input id="slide" class="control_silder" type="range" min="-60" max="60" step="10" value="-10" />
+                        </div>
+                    </div>
+                </div> 
             </div>
+
+            <div class="lightsource">
+                <hr>
+                <h2>Hi</h2>
+            </div>
+
+            <div class="material">
+                <hr>
+                <h2>Hi2</h2>
+            </div>
+
+            <div class="viewshading">
+                <hr>
+                <h2>Hi3</h2>
+            </div>
+
+            <script>
+                // JQuery function to show each content based on navbar
+                function showContent(contentType) {
+                    // Hide all content divs
+                    $('.hierarchical, .lightsource, .material, .viewshading').hide();
+
+                    // Remove active class from all li elements
+                    $('.submenu li').removeClass('active');
+
+                    // Show the selected content div
+                    $('.' + contentType).show();
+
+                    // Add active class to the clicked li element
+                    $('.submenu li[data-content="' + contentType + '"]').addClass('active');
+                }
+
+                function handleMouseWheel(event) {
+                    event.preventDefault();
                 
-            <div class="row">
-                <div class="col-12">
-                    <div id="slider6">
-                        <label for="leftupperleg" class="title">Left Upper Leg Angle :</label><output class="control_slider_bubble" id="leftupperleg_output"></output>
-                        <br>
-                        <input id="slide" class="control_silder" type="range"min="-180" max="-30" step="10" value="-180" />
-                    </div>
-    
-                    <div id="slider7">
-                        <label for="leftlowerleg" class="title">Left Lower Leg Angle :</label><output class="control_slider_bubble" id="leftlowerleg_output"></output>
-                        <br>
-                        <input id="slide" class="control_silder" type="range" min="-60" max="60" step="10" value="10" />
-                    </div>
-    
-                    <div id="slider8">
-                        <label for="rightupperleg" class="title">Right Upper Leg Angle :</label><output class="control_slider_bubble" id="rightupperleg_output"></output>
-                        <br>
-                        <input id="slide" class="control_silder" type="range" min="30" max="180" step="10" value="180" />
-                    </div>
-    
-                    <div id="slider9">
-                        <label for="rightlowerleg" class="title">Right Lower Leg Angle :</label><output class="control_slider_bubble" id="rightlowerleg_output"></output>
-                        <br>
-                        <input id="slide" class="control_silder" type="range" min="-60" max="60" step="10" value="-10" />
-                    </div>
-                </div>
-            </div> 
+                    const container = document.querySelector('.submenu');
+                    const scrollAmount = 30; // Adjust the scroll amount as needed
+                
+                    container.scrollLeft -= event.deltaY > 0 ? -scrollAmount : scrollAmount;
+                }
+            </script>
         </div>
         
         <div class="canvas-container">

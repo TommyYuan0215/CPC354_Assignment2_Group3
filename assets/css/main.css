@@ -4,7 +4,9 @@ body {
 
 .header {
   overflow: hidden;
-  background-image: linear-gradient(red, yellow);
+  /* background-image: linear-gradient(red, yellow); */
+  background-image: url('../img/header.jpg');
+
   padding: 20px 10px;
 }
 
@@ -24,6 +26,7 @@ body {
     margin-left: 12px;
     font-size: 25px;
     font-weight: bold;
+    color: white;
   }
   
 .header a:hover {
@@ -40,6 +43,35 @@ body {
     float: right;
   }
 
+.submenu {
+  list-style-type: none;
+  border: 1px solid slateblue;
+  padding: 8px 0px;
+  border-radius: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+} 
+
+.submenu li {
+  display: inline;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.submenu li.active {
+  background-color: slateblue;
+  color: white;
+}
+
+.submenu li:hover {
+  border: 1px solid slateblue;
+}
+
+.lightsource, .material, .viewshading {
+  display: none;
+}
+
 .controls-container {
   top: 80px;
   bottom: 0;
@@ -47,6 +79,7 @@ body {
   width: 20%;
   float: left;
   position: fixed;
+  font-size: 14px;
   background-color: #f1f1f1;
   overflow-x: hidden;
   overflow-y:scroll;
@@ -78,30 +111,31 @@ body {
   width: 20px; /* Set a specific slider handle width */
   height: 20px; /* Slider handle height */
   border-radius: 50%;
-  background: #535db3; /* Green background */
+  background-color: slateblue;
   cursor: pointer; /* Cursor on hover */
 }
 
 .control_silder::-moz-range-thumb {
-  width: 25px; /* Set a specific slider handle width */
-  height: 25px; /* Slider handle height */
+  width: 20px; /* Set a specific slider handle width */
+  height: 20px; /* Slider handle height */
   border-radius: 50%;
-  background: #535db3; /* Green background */
+  background-color: slateblue;
   cursor: pointer; /* Cursor on hover */
 }
 
 .control_slider_bubble {
   float: right;
-  background: #535db3;
-  color: white;
-  padding: 4px 12px;
+  /* background-color: slateblue; */
+  color: black;
+  padding: 1px 8px;
+  border: 1px solid slateblue;
   border-radius: 40px;
+  font-size: 12px;
 }
 
 .canvas-container {
   margin:0 0 0 20%;
   background-image: url('../img/landscape1.gif');
-  background-repeat: no-repeat;
   background-repeat: no-repeat;
   background-size: auto 900px;
 }
