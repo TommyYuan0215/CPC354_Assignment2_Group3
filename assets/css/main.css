@@ -37,12 +37,12 @@ body {
 
 .zoomeffect {
 	-webkit-animation: zoomin 0s ease-in;
-	animation: zoomin 1s ease-in;	
+	animation: zoomin 0.75s ease-in;	
 }
 
 @keyframes zoomin {
 	0% {
-		transform: scale(0);
+		transform: scale(2);
 	}
 	100% {
 		transform: scale(1);
