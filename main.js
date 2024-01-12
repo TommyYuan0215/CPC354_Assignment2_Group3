@@ -124,6 +124,7 @@ function initNodes(Id) {
     m = rotate(theta[GLOBAL_ANGLE_ID], 0, 0, 1);
     m = mult(m, rotate(theta[torsoId + 1], 1, 0, 0));
     m = mult(m, rotate(theta[torsoId], 0, 1, 0 ));
+
     figure[torsoId] = createNode( m, torso, null, headId );
     break;
 
