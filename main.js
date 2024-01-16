@@ -325,8 +325,33 @@ window.onload = function init() {
     //  Load shaders and initialize attribute buffers
     //
     program = initShaders( gl, "vertex-shader", "fragment-shader");
-    
     gl.useProgram( program);
+
+    // Set the light source position (modify according to your scene)
+    var lightPos = vec3(1.0, 1.0, -1.0);
+    var lightPosLoc = gl.getUniformLocation(program, "lightPos");
+    gl.uniform3fv(lightPosLoc, flatten(lightPos));
+
+    // Set initial values for the light properties
+    var Ka = 0.6;
+    var Kd = 0.8;
+    var Ks = 0.6;
+    var shininessVal = 80.0;
+    var ambientColor = vec3(1.0, 1.0, 1.0);  // Example ambient color (modify according to your scene)
+    var diffuseColor = vec3(1.0, 0.0, 1.0);  // Example diffuse color (modify according to your scene)
+    var specularColor = vec3(0.0, 0.0, 0.0); // Example specular color (modify according to your scene)
+    var mode = 1; // Example rendering mode (modify according to your needs)
+
+    // Set the initial values for the uniforms in the shader
+    gl.uniform1f(gl.getUniformLocation(program, "Ka"), Ka);
+    gl.uniform1f(gl.getUniformLocation(program, "Kd"), Kd);
+    gl.uniform1f(gl.getUniformLocation(program, "Ks"), Ks);
+    gl.uniform1f(gl.getUniformLocation(program, "shininessVal"), shininessVal);
+    gl.uniform3fv(gl.getUniformLocation(program, "ambientColor"), flatten(ambientColor));
+    gl.uniform3fv(gl.getUniformLocation(program, "diffuseColor"), flatten(diffuseColor));
+    gl.uniform3fv(gl.getUniformLocation(program, "specularColor"), flatten(specularColor));
+    gl.uniform1i(gl.getUniformLocation(program, "mode"), mode);
+
 
     instanceMatrix = mat4();
     
@@ -490,6 +515,12 @@ window.onload = function init() {
 
         // Update the content of the output element with the slider value
         document.getElementById("ambientReflectionValue").textContent = sliderValue;
+
+        // Update Ka with the slider value
+        Ka = sliderValue;
+
+        // Use the updated Ka value in your rendering logic
+        gl.uniform1f(gl.getUniformLocation(program, "Ka"), Ka);
     });
 
       document.getElementById("diffuseReflectionSlider").addEventListener("input", function() {
@@ -498,6 +529,12 @@ window.onload = function init() {
 
         // Update the content of the output element with the slider value
         document.getElementById("diffuseReflectionValue").textContent = sliderValue;
+
+        // Update Ka with the slider value
+        Kd = sliderValue;
+
+        // Use the updated Ka value in your rendering logic
+        gl.uniform1f(gl.getUniformLocation(program, "Kd"), Ka);
     });
 
       document.getElementById("specularReflectionSlider").addEventListener("input", function() {
@@ -506,9 +543,62 @@ window.onload = function init() {
 
         // Update the content of the output element with the slider value
         document.getElementById("specularReflectionValue").textContent = sliderValue;
+
+        // Update Ka with the slider value
+        Ks = sliderValue;
+
+        // Use the updated Ka value in your rendering logic
+        gl.uniform1f(gl.getUniformLocation(program, "Ks"), Ka);
     });
 
-      document.getElementById("shininessSlider").addEventListener("input", function() {
+    // ----------- Light Source Control --------
+    
+    // Ambient color input
+    document.getElementById("colorSelectorAmbient").addEventListener("input", function() {
+        // Get the current value of the color input
+        var colorValue = this.value;
+
+        // Extract RGB components from the color input
+        var rgb = hexToRgb(colorValue);
+
+        // Update ambientColor with the new RGB values
+        ambientColor = vec3(rgb.r / 255, rgb.g / 255, rgb.b / 255);
+
+        // Use the updated ambientColor value in your rendering logic
+        gl.uniform3fv(gl.getUniformLocation(program, "ambientColor"), flatten(ambientColor));
+    });
+
+    document.getElementById("colorSelectorDiffuse").addEventListener("input", function() {
+        // Get the current value of the color input
+        var colorValue = this.value;
+
+        // Extract RGB components from the color input
+        var rgb = hexToRgb(colorValue);
+
+        // Update specularColor with the new RGB values
+        diffuseColor = vec3(rgb.r / 255, rgb.g / 255, rgb.b / 255);
+
+        // Use the updated ambientColor value in your rendering logic
+        gl.uniform3fv(gl.getUniformLocation(program, "diffuseColor"), flatten(diffuseColor));
+    });
+
+    document.getElementById("colorSelectorSpecular").addEventListener("input", function() {
+        // Get the current value of the color input
+        var colorValue = this.value;
+
+        // Extract RGB components from the color input
+        var rgb = hexToRgb(colorValue);
+
+        // Update ambientColor with the new RGB values
+        specularColor = vec3(rgb.r / 255, rgb.g / 255, rgb.b / 255);
+
+        // Use the updated ambientColor value in your rendering logic
+        gl.uniform3fv(gl.getUniformLocation(program, "specularColor"), flatten(specularColor));
+    });
+
+    
+
+    document.getElementById("shininessSlider").addEventListener("input", function() {
         // Get the current value of the slider
         var sliderValue = this.value;
 
@@ -547,6 +637,19 @@ window.onload = function init() {
     render();
 }
 
+// Function to convert hex color to RGB
+function hexToRgb(hex) {
+    // Remove the hash sign if present
+    hex = hex.replace(/^#/, '');
+
+    // Parse the hex value into RGB components
+    var bigint = parseInt(hex, 16);
+    var r = (bigint >> 16) & 255;
+    var g = (bigint >> 8) & 255;
+    var b = bigint & 255;
+
+    return { r, g, b };
+}
 
 var render = function() {
     gl.clear( gl.COLOR_BUFFER_BIT );
