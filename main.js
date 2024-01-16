@@ -260,6 +260,8 @@ function rightLowerArm() {
     for(var i =0; i<6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4*i, 4);
 }
 
+//hello
+
 function  leftUpperLeg() {
 
     instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * upperLegHeight, 0.0) );
