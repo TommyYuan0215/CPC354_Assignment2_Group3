@@ -333,11 +333,11 @@ window.onload = function init() {
     gl.uniform3fv(lightPosLoc, flatten(lightPos));
 
     // Set initial values for the light properties
-    var Ka = 0.6;
-    var Kd = 0.8;
-    var Ks = 0.6;
+    var Ka = 1.0;
+    var Kd = 1.0;
+    var Ks = 1.0;
     var shininessVal = 80.0;
-    var ambientColor = vec3(1.0, 1.0, 1.0);  // Example ambient color (modify according to your scene)
+    var ambientColor = vec3(0.0, 0.6, 1.0);  // Example ambient color (modify according to your scene)
     var diffuseColor = vec3(1.0, 0.0, 1.0);  // Example diffuse color (modify according to your scene)
     var specularColor = vec3(0.0, 0.0, 0.0); // Example specular color (modify according to your scene)
     var mode = 1; // Example rendering mode (modify according to your needs)
