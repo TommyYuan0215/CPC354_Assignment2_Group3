@@ -17,62 +17,26 @@
 
     <script id="vertex-shader" type="x-shader/x-vertex">
 
-        attribute vec3 position;
-        attribute vec3 normal;
-        uniform mat4 projection, modelview, normalMat;
-        varying vec3 normalInterp;
-        varying vec3 vertPos;
-        uniform int mode;   // Rendering mode
-        uniform float Ka;   // Ambient reflection coefficient
-        uniform float Kd;   // Diffuse reflection coefficient
-        uniform float Ks;   // Specular reflection coefficient
-        uniform float shininessVal; // Shininess
-        // Material color
-        uniform vec3 ambientColor;
-        uniform vec3 diffuseColor;
-        uniform vec3 specularColor;
-        uniform vec3 lightPos; // Light position
-        varying vec4 color; //color
-
-        void main(){
-        vec4 vertPos4 = modelview * vec4(position, 1.0);
-        vertPos = vec3(vertPos4) / vertPos4.w;
-        normalInterp = vec3(normalMat * vec4(normal, 0.0));
-        gl_Position = projection * vertPos4;
-
-        vec3 N = normalize(normalInterp);
-        vec3 L = normalize(lightPos - vertPos);
-        // Lambert's cosine law
-        float lambertian = max(dot(N, L), 0.0);
-        float specular = 0.0;
-        if(lambertian > 0.0) {
-        vec3 R = reflect(-L, N);      // Reflected light vector
-        vec3 V = normalize(-vertPos); // Vector to viewer
-        // Compute the specular term
-        float specAngle = max(dot(R, V), 0.0);
-        specular = pow(specAngle, shininessVal);
-        }
-        color = vec4(Ka * ambientColor +
-                    Kd * lambertian * diffuseColor +
-                    Ks * specular * specularColor, 1.0);
-
-        // only ambient
-        if(mode == 2) color = vec4(Ka * ambientColor, 1.0);
-        // only diffuse
-        if(mode == 3) color = vec4(Kd * lambertian * diffuseColor, 1.0);
-        // only specular
-        if(mode == 4) color = vec4(Ks * specular * specularColor, 1.0);
-        }
-
+        attribute  vec4 vPosition;
+        
+        uniform mat4 modelViewMatrix;
+        uniform mat4 projectionMatrix;
+        
+        void main() 
+        {
+            gl_Position = projectionMatrix * modelViewMatrix * vPosition;
+        } 
         </script>
         
         <script id="fragment-shader" type="x-shader/x-fragment">
-            precision mediump float;
-
-            varying vec4 color;
-            void main() {
-            gl_FragColor = color;
-            }
+        
+        precision mediump float;
+        
+        void main()
+        {
+            gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+        
+        }
         </script>
 </head>
 <body>
@@ -207,65 +171,31 @@
                     <hr>
                     <div class="row">
                         <div class="col-12">
-                            <div>
-                                <!-- Ambient Reflection Slider -->
-                                <label for="ambientReflection">Ambient Reflection (Ka):</label><output class="control_slider_bubble" id="ambientReflectionValue"></output>
-                                <input id="ambientReflectionSlider" class="control_silder" type="range" min="0" max="1" step="0.1" value="1.0">
-                                <br>
-
-                                <!-- Diffuse Reflection Slider -->
-                                <label for="diffuseReflection">Diffuse Reflection (Kd):</label><output class="control_slider_bubble" id="diffuseReflectionValue"></output>
-                                <input id="diffuseReflectionSlider" class="control_silder" type="range" min="0" max="1" step="0.1" value="1.0">
-                                <br>
-
-                                <!-- Specular Reflection Slider -->
-                                <label for="specularReflection">Specular Reflection (Ks):</label><output class="control_slider_bubble" id="specularReflectionValue"></output>
-                                <input id="specularReflectionSlider" class="control_silder" type="range" min="0" max="1" step="0.1" value="1.0">
-                                <br>
-
-                                <!-- Shininess Slider -->
-                                <label for="shininess">Shininess:</label><output class="control_slider_bubble" id="shininessValue"></output>
-                                <input id="shininessSlider" class="control_silder" type="range" min="0" max="100" step="1" value="80">
-                                
-                             </div>
                             <div id="">
-                                <label for="" class="title">Ambient color :</label>
+                                <label for="global_rotation" class="title">Ambient color :</label>
                                 <br>
                                 <input type="color" id="colorSelectorAmbient" value="#341a00">
                                 <!-- <div id='colorSelectorAmbient' class='colorSelector'><div style='background-color:rgb(52,26,0)'></div></div> -->
                             </div>
             
                             <div id="">
-                                <label for="" class="title">Diffuse Color :</label>
+                                <label for="positionX" class="title">Diffuse Color :</label>
                                 <br>
                                 <input type="color" id="colorSelectorDiffuse" value="#cc6600">
                                 <!-- <div id='colorSelectorDiffuse' class='colorSelector'><div style='background-color:rgb(204,102,0)'></div></div> -->
                             </div>
             
                             <div id="">
-                                <label for="" class="title">Specular Color :</label>
+                                <label for="positionY" class="title">Specular Color :</label>
                                 <br>
                                 <input type="color" id="colorSelectorSpecular" value="#ffffff">
                                 <!-- <div id='colorSelectorSpecular' class='colorSelector'><div style='background-color:rgb(256,256,256)'></div></div> -->
                             </div>
-
-                            <div id="lightPositionSection">
-                                <hr>
-                                <label for="lightX" class="title">Light Position X :</label><output class="control_slider_bubble" id="lightxValue"></output>
-                                <br>
-                                <input id="lightX" class="control_silder" type="range" min="-100" max="100" step="1" value="0" />
-                                
-                                <label for="lightY" class="title">Light Position Y :</label><output class="control_slider_bubble" id="lightyValue"></output>
-                                <br>
-                                <input id="lightY" class="control_silder" type="range" min="-100" max="100" step="1" value="0" />
-                                
-                                <label for="lightZ" class="title">Light Position Z :</label><output class="control_slider_bubble" id="lightzValue"></output>
-                                <br>
-                                <input id="lightZ" class="control_silder" type="range" min="-100" max="100" step="1" value="0" />
-                            </div>
                         </div>
                     </div>
                 </div>
+
+                
     
                 <div class="material">
                     <hr>
