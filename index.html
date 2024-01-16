@@ -199,7 +199,39 @@
     
                 <div class="material">
                     <hr>
-                    <h2>Hi2</h2>
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="diffuseColor" class="title">Diffuse Color :</label>
+                            <br>
+                            <input type="color" id="diffuseColor" value="#cccccc">
+                        </div>
+                    
+                        <div class="col-12">
+                            <label for="specularColor" class="title">Specular Color :</label>
+                            <br>
+                            <input type="color" id="specularColor" value="#ffffff">
+                        </div>
+                    
+                        <div class="col-12">
+                            <label for="ambientColor" class="title">Ambient Color :</label>
+                            <br>
+                            <input type="color" id="ambientColor" value="#333333">
+                        </div>
+                    
+                        <div class="col-12">
+                            <label for="reflectionCoeff" class="title">Reflection Coefficient :</label>
+                            <br>
+                            <input type="range" id="reflectionCoeff" min="0" max="1" step="0.1" value="0.5">
+                            <output class="control_slider_bubble" id="reflectionCoeffOutput">0.5</output>
+                        </div>
+                    
+                        <div class="col-12">
+                            <label for="shininess" class="title">Shininess :</label>
+                            <br>
+                            <input type="range" id="shininess" min="1" max="100" step="1" value="50">
+                            <output class="control_slider_bubble" id="shininessOutput">50</output>
+                        </div>
+                    </div>
                 </div>
     
                 <div class="viewshading">
