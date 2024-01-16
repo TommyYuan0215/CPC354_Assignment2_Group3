@@ -367,7 +367,15 @@ window.onload = function init() {
     document.getElementById("global_rotation_output").textContent = 0;
     document.getElementById("positionX_output").textContent = 0;
     document.getElementById("positionY_output").textContent = 0;
+    document.getElementById("ambientReflectionValue").textContent = 1.0;
+    document.getElementById("diffuseReflectionValue").textContent = 1.0;
+    document.getElementById("specularReflectionValue").textContent = 1.0;
+    document.getElementById("shininessValue").textContent = 80;
+    document.getElementById("lightxValue").textContent = 1;
+    document.getElementById("lightyValue").textContent = 1;
+    document.getElementById("lightzValue").textContent = -1;
     
+
     // On change function for each of the hierarchical model
     document.getElementById("slider0").onchange = function() {
         SliderValue = event.srcElement.value;
@@ -475,6 +483,64 @@ window.onload = function init() {
         document.getElementById("torsoX_output").textContent = SliderValue;
         initNodes(torsoId);
       };
+
+      document.getElementById("ambientReflectionSlider").addEventListener("input", function() {
+        // Get the current value of the slider
+        var sliderValue = this.value;
+
+        // Update the content of the output element with the slider value
+        document.getElementById("ambientReflectionValue").textContent = sliderValue;
+    });
+
+      document.getElementById("diffuseReflectionSlider").addEventListener("input", function() {
+        // Get the current value of the slider
+        var sliderValue = this.value;
+
+        // Update the content of the output element with the slider value
+        document.getElementById("diffuseReflectionValue").textContent = sliderValue;
+    });
+
+      document.getElementById("specularReflectionSlider").addEventListener("input", function() {
+        // Get the current value of the slider
+        var sliderValue = this.value;
+
+        // Update the content of the output element with the slider value
+        document.getElementById("specularReflectionValue").textContent = sliderValue;
+    });
+
+      document.getElementById("shininessSlider").addEventListener("input", function() {
+        // Get the current value of the slider
+        var sliderValue = this.value;
+
+        // Update the content of the output element with the slider value
+        document.getElementById("shininessValue").textContent = sliderValue;
+    });
+
+    document.getElementById("lightX").addEventListener("input", function() {
+        // Get the current value of the slider
+        var sliderValue = this.value;
+
+        // Update the content of the output element with the slider value
+        document.getElementById("lightxValue").textContent = sliderValue;
+    });
+
+    document.getElementById("lightY").addEventListener("input", function() {
+        // Get the current value of the slider
+        var sliderValue = this.value;
+
+        // Update the content of the output element with the slider value
+        document.getElementById("lightyValue").textContent = sliderValue;
+    });
+
+    document.getElementById("lightZ").addEventListener("input", function() {
+        // Get the current value of the slider
+        var sliderValue = this.value;
+
+        // Update the content of the output element with the slider value
+        document.getElementById("lightzValue").textContent = sliderValue;
+    });
+
+      
 
     for(i=0; i<numNodes; i++) initNodes(i);
     
