@@ -171,8 +171,30 @@
                     <hr>
                     <div class="row">
                         <div class="col-12">
+                            <div>
+                                <!-- Ambient Reflection Slider -->
+                                <label for="ambientReflection">Ambient Reflection (Ka):</label><output class="control_slider_bubble" id="ambientReflectionValue"></output>
+                                <input id="ambientReflectionSlider" class="control_silder" type="range" min="0" max="1" step="0.1" value="1.0">
+                                <br>
+
+                                <!-- Diffuse Reflection Slider -->
+                                <label for="diffuseReflection">Diffuse Reflection (Kd):</label><output class="control_slider_bubble" id="diffuseReflectionValue"></output>
+                                <input id="diffuseReflectionSlider" class="control_silder" type="range" min="0" max="1" step="0.1" value="1.0">
+                                <br>
+
+                                <!-- Specular Reflection Slider -->
+                                <label for="specularReflection">Specular Reflection (Ks):</label><output class="control_slider_bubble" id="specularReflectionValue"></output>
+                                <input id="specularReflectionSlider" class="control_silder" type="range" min="0" max="1" step="0.1" value="1.0">
+                                <br>
+
+                                <!-- Shininess Slider -->
+                                <label for="shininess">Shininess:</label><output class="control_slider_bubble" id="shininessValue"></output>
+                                <input id="shininessSlider" class="control_silder" type="range" min="0" max="100" step="1" value="80">
+                                
+                             </div>
                             <div id="">
                                 <label for="global_rotation" class="title">Ambient color :</label>
+                                <label for="" class="title">Ambient color :</label>
                                 <br>
                                 <input type="color" id="colorSelectorAmbient" value="#341a00">
                                 <!-- <div id='colorSelectorAmbient' class='colorSelector'><div style='background-color:rgb(52,26,0)'></div></div> -->
@@ -180,6 +202,7 @@
             
                             <div id="">
                                 <label for="positionX" class="title">Diffuse Color :</label>
+                                <label for="" class="title">Diffuse Color :</label>
                                 <br>
                                 <input type="color" id="colorSelectorDiffuse" value="#cc6600">
                                 <!-- <div id='colorSelectorDiffuse' class='colorSelector'><div style='background-color:rgb(204,102,0)'></div></div> -->
@@ -187,13 +210,30 @@
             
                             <div id="">
                                 <label for="positionY" class="title">Specular Color :</label>
+                                <label for="" class="title">Specular Color :</label>
                                 <br>
                                 <input type="color" id="colorSelectorSpecular" value="#ffffff">
                                 <!-- <div id='colorSelectorSpecular' class='colorSelector'><div style='background-color:rgb(256,256,256)'></div></div> -->
                             </div>
+
+                            <div id="lightPositionSection">
+                                <hr>
+                                <label for="lightX" class="title">Light Position X :</label><output class="control_slider_bubble" id="lightxValue"></output>
+                                <br>
+                                <input id="lightX" class="control_silder" type="range" min="-100" max="100" step="1" value="0" />
+                                
+                                <label for="lightY" class="title">Light Position Y :</label><output class="control_slider_bubble" id="lightyValue"></output>
+                                <br>
+                                <input id="lightY" class="control_silder" type="range" min="-100" max="100" step="1" value="0" />
+                                
+                                <label for="lightZ" class="title">Light Position Z :</label><output class="control_slider_bubble" id="lightzValue"></output>
+                                <br>
+                                <input id="lightZ" class="control_silder" type="range" min="-100" max="100" step="1" value="0" />
+                            </div>
                         </div>
                     </div>
                 </div>
+
 
                 
     
