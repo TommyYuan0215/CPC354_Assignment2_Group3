@@ -117,8 +117,7 @@ body {
 }
 
 .lightsource,
-.material,
-.viewshading {
+.material {
   display: none;
 }
 

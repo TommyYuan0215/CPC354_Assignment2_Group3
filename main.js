@@ -56,9 +56,8 @@ var leftLowerLegId = 7;
 var rightUpperLegId = 8;
 var rightLowerLegId = 9;
 
-var GLOBAL_ANGLE_ID = 10;
-var GLOBAL_X_COORDINATE = 11;
-var GLOBAL_Y_COORDINATE = 12;
+var GLOBAL_X_COORDINATE = 10;
+var GLOBAL_Y_COORDINATE = 11;
 
 var torsoHeight = 6.0;
 var torsoWidth = 2.0;
@@ -125,10 +124,7 @@ function initNodes(Id) {
     switch (Id) {
 
         case torsoId:
-
-            m = rotate(theta[GLOBAL_ANGLE_ID], 0, 0, 1);
-            m = mult(m, rotate(theta[torsoId + 1], 1, 0, 0));
-            m = mult(m, rotate(theta[torsoId], 0, 1, 0));
+            m = rotate(theta[torsoId], 0, 1, 0);
 
             figure[torsoId] = createNode(m, torso, null, headId);
             break;
@@ -396,8 +392,6 @@ window.onload = function init() {
 
 
     // Initial State for each of the output value 
-    document.getElementById("torsoX_output").textContent = 0;
-    document.getElementById("torsoY_output").textContent = 60;
     document.getElementById("head1_output").textContent = 0;
     document.getElementById("head2_output").textContent = 0;
     document.getElementById("leftupperarm_output").textContent = -160;
@@ -408,7 +402,6 @@ window.onload = function init() {
     document.getElementById("leftlowerleg_output").textContent = 10;
     document.getElementById("rightupperleg_output").textContent = 180;
     document.getElementById("rightlowerleg_output").textContent = -10;
-    document.getElementById("global_rotation_output").textContent = 0;
     document.getElementById("positionX_output").textContent = 0;
     document.getElementById("positionY_output").textContent = 0;
     document.getElementById("ambientReflectionValue").textContent = 1.0;
@@ -425,91 +418,77 @@ window.onload = function init() {
 
 
     // On change function for each of the hierarchical model
-    document.getElementById("slider0").onchange = function () {
-        SliderValue = event.srcElement.value;
-        theta[torsoId] = SliderValue;
-        document.getElementById("torsoY_output").textContent = SliderValue;
-        initNodes(torsoId);
-    };
-
-    document.getElementById("slider1").onchange = function () {
+    document.getElementById("slider1").oninput = function () {
         SliderValue = event.srcElement.value;
         theta[head1Id] = SliderValue;
         document.getElementById("head1_output").textContent = SliderValue;
         initNodes(head1Id);
     };
 
-    document.getElementById("slider2").onchange = function () {
+    document.getElementById("slider2").oninput = function () {
         SliderValue = event.srcElement.value;
         theta[leftUpperArmId] = SliderValue;
         document.getElementById("leftupperarm_output").textContent = SliderValue;
         initNodes(leftUpperArmId);
     };
 
-    document.getElementById("slider3").onchange = function () {
+    document.getElementById("slider3").oninput = function () {
         SliderValue = event.srcElement.value;
         theta[leftLowerArmId] = SliderValue;
         document.getElementById("leftlowerarm_output").textContent = SliderValue;
         initNodes(leftLowerArmId);
     };
 
-    document.getElementById("slider4").onchange = function () {
+    document.getElementById("slider4").oninput = function () {
         SliderValue = event.srcElement.value;
         theta[rightUpperArmId] = SliderValue;
         document.getElementById("rightupperarm_output").textContent = SliderValue;
         initNodes(rightUpperArmId);
     };
 
-    document.getElementById("slider5").onchange = function () {
+    document.getElementById("slider5").oninput = function () {
         SliderValue = event.srcElement.value;
         theta[rightLowerArmId] = SliderValue;
         document.getElementById("rightlowerarm_output").textContent = SliderValue;
         initNodes(rightLowerArmId);
     };
 
-    document.getElementById("slider6").onchange = function () {
+    document.getElementById("slider6").oninput = function () {
         SliderValue = event.srcElement.value;
         theta[leftUpperLegId] = SliderValue;
         document.getElementById("leftupperleg_output").textContent = SliderValue;
         initNodes(leftUpperLegId);
     };
 
-    document.getElementById("slider7").onchange = function () {
+    document.getElementById("slider7").oninput = function () {
         SliderValue = event.srcElement.value;
         theta[leftLowerLegId] = SliderValue;
         document.getElementById("leftlowerleg_output").textContent = SliderValue;
         initNodes(leftLowerLegId);
     };
 
-    document.getElementById("slider8").onchange = function () {
+    document.getElementById("slider8").oninput = function () {
         SliderValue = event.srcElement.value;
         theta[rightUpperLegId] = SliderValue;
         document.getElementById("rightupperleg_output").textContent = SliderValue;
         initNodes(rightUpperLegId);
     };
 
-    document.getElementById("slider9").onchange = function () {
+    document.getElementById("slider9").oninput = function () {
         SliderValue = event.srcElement.value;
         theta[rightLowerLegId] = SliderValue;
         document.getElementById("rightlowerleg_output").textContent = SliderValue;
         initNodes(rightLowerLegId);
     };
 
-    document.getElementById("slider10").onchange = function () {
+    document.getElementById("slider10").oninput = function () {
         SliderValue = event.srcElement.value;
         theta[head2Id] = SliderValue;
         document.getElementById("head2_output").textContent = SliderValue;
         initNodes(head2Id);
     };
 
-    document.getElementById("slider11").onchange = function () {
-        SliderValue = event.srcElement.value;
-        theta[GLOBAL_ANGLE_ID] = SliderValue;
-        document.getElementById("global_rotation_output").textContent = SliderValue;
-        initNodes(torsoId);
-    };
-
-    document.getElementById("slider12").onchange = function () {
+    document.getElementById("slider11").oninput  = function () {
         SliderValue = event.srcElement.value - 400;
         theta[GLOBAL_X_COORDINATE] = SliderValue;
         gl.viewport(0 + theta[GLOBAL_X_COORDINATE], 0 + theta[GLOBAL_Y_COORDINATE], canvas.width, canvas.height);
@@ -517,18 +496,11 @@ window.onload = function init() {
         initNodes(torsoId);
     };
 
-    document.getElementById("slider13").onchange = function () {
+    document.getElementById("slider12").oninput  = function () {
         SliderValue = event.srcElement.value - 400;
         theta[GLOBAL_Y_COORDINATE] = SliderValue;
         gl.viewport(0 + theta[GLOBAL_X_COORDINATE], 0 + theta[GLOBAL_Y_COORDINATE], canvas.width, canvas.height);
         document.getElementById("positionY_output").textContent = SliderValue;
-        initNodes(torsoId);
-    };
-
-    document.getElementById("slider14").onchange = function () {
-        SliderValue = event.srcElement.value;
-        theta[torsoId + 1] = SliderValue;
-        document.getElementById("torsoX_output").textContent = SliderValue;
         initNodes(torsoId);
     };
 
@@ -685,9 +657,6 @@ window.onload = function init() {
         // Update the content of the output element with the slider value
         document.getElementById("cameraZValue").textContent = sliderValue;
     });
-
-
-
 
     for (i = 0; i < numNodes; i++) initNodes(i);
 

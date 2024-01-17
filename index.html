@@ -128,30 +128,51 @@
                         Modelling</li>
                     <li data-content="lightsource" onclick="showContent('lightsource')">Light Sources</li>
                     <li data-content="material" onclick="showContent('material')">Material Properties</li>
-                    <li data-content="viewshading" onclick="showContent('viewshading')">View & Shading</li>
                 </ul>
                 <p><b>Note:</b> Use the scroll wheel to move the submenu from left to right.</p>
                 <div class="hierarchical">
                     <hr>
                     <div class="row">
+                        <!-- X-axis slider -->
+                        <div class="col-12">
+                            <label for="cameraX" class="title">X-axis Camera</label><output
+                                class="control_slider_bubble" id="cameraXValue"></output>
+                            <br>
+                            <input type="range" id="cameraXSlider" class="control_silder" min="-20" max="20" step="0.1"
+                                value="0" />
+                        </div>
+
+                        <!-- Y-axis slider -->
+                        <div class="col-12">
+                            <label for="cameraY" class="title">Y-axis Camera</label><output
+                                class="control_slider_bubble" id="cameraYValue"></output>
+                            <br>
+                            <input type="range" id="cameraYSlider" class="control_silder" min="-20" max="20" step="0.1"
+                                value="0" />
+                        </div>
+
+                        <!-- Z-axis slider -->
+                        <div class="col-12">
+                            <label for="cameraZ" class="title">Z-axis Camera</label><output
+                                class="control_slider_bubble" id="cameraZValue"></output>
+                            <br>
+                            <input type="range" id="cameraZSlider" class="control_silder" min="-20" max="20" step="0.1"
+                                value="10" />
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
                         <div class="col-12">
                             <div id="slider11">
-                                <label for="global_rotation" class="title">Global Rotation Angle (Z-axis)
-                                    :</label><output class="control_slider_bubble" id="global_rotation_output"></output>
-                                <br>
-                                <input id="slide" class="control_silder" type="range" min="-180" max="180" step="10"
-                                    value="0" />
-                            </div>
-
-                            <div id="slider12">
                                 <label for="positionX" class="title">Global Position X :</label><output
                                     class="control_slider_bubble" id="positionX_output"></output>
                                 <br>
                                 <input id="slide" class="control_silder" type="range" min="-100" max="800" step="10"
                                     value="400" />
                             </div>
-
-                            <div id="slider13">
+                        </div>
+                        <div class="col-12">
+                            <div id="slider12">
                                 <label for="positionY" class="title">Global Position Y :</label><output
                                     class="control_slider_bubble" id="positionY_output"></output>
                                 <br>
@@ -164,22 +185,6 @@
                     <hr>
                     <div class="row">
                         <div class="col-12">
-                            <div id="slider14">
-                                <label for="torso1" class="title">Torso X-axis Angle :</label><output
-                                    class="control_slider_bubble" id="torsoX_output"></output>
-                                <br>
-                                <input id="slide" class="control_silder" type="range" min="-180" max="180" step="10"
-                                    value="0" />
-                            </div>
-
-                            <div id="slider0">
-                                <label for="torso" class="title">Torso Y-axis Angle :</label><output
-                                    class="control_slider_bubble" id="torsoY_output"></output>
-                                <br>
-                                <input id="slide" class="control_silder" type="range" min="-180" max="180" step="10"
-                                    value="60" />
-                            </div>
-
                             <div id="slider1">
                                 <label for="torso" class="title">Head Top & Bottom Angle :</label><output
                                     class="control_slider_bubble" id="head1_output"></output>
@@ -372,42 +377,11 @@
                     </div>
                 </div>
 
-                <div class="viewshading">
-                    <hr>
-                    <div class="row">
-                        <!-- X-axis slider -->
-                        <div class="col-12">
-                            <label for="cameraX" class="title">X-axis Camera</label><output class="control_slider_bubble"
-                            id="cameraXValue"></output>
-                            <br>
-                            <input type="range" id="cameraXSlider" class="control_silder" min="-20" max="20" step="0.1"
-                                value="0" />
-                        </div>
-
-                        <!-- Y-axis slider -->
-                        <div class="col-12">
-                            <label for="cameraY" class="title">Y-axis Camera</label><output class="control_slider_bubble"
-                            id="cameraYValue"></output>
-                            <br>
-                            <input type="range" id="cameraYSlider" class="control_silder" min="-20" max="20" step="0.1" value="0" />
-                        </div>
-
-                        <!-- Z-axis slider -->
-                        <div class="col-12">
-                            <label for="cameraZ" class="title">Z-axis Camera</label><output class="control_slider_bubble"
-                            id="cameraZValue"></output>
-                            <br>
-                            <input type="range" id="cameraZSlider" class="control_silder" min="-20" max="20" step="0.1" value="10" />
-                        </div>
-
-                    </div>
-                </div>
-
                 <script>
                     // JQuery function to show each content based on navbar
                     function showContent(contentType) {
                         // Hide all content divs
-                        $('.hierarchical, .lightsource, .material, .viewshading').hide();
+                        $('.hierarchical, .lightsource, .material').hide();
 
                         // Remove active class from all li elements
                         $('.submenu li').removeClass('active');
