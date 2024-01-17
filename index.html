@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,82 +16,100 @@
     <!-- JQuery link to run basic function-->
     <script src="assets/js/jquery-3.6.4.min.js"></script>
 
-        <script id="vertex-shader" type="x-shader/x-vertex">
-            attribute vec4 vPosition;
-            attribute vec3 vNormal;
+    <script id="vertex-shader" type="x-shader/x-vertex">
+        attribute vec4 vPosition;
+        attribute vec3 vNormal;
+
+        uniform mat4 modelViewMatrix;
+        uniform mat4 projectionMatrix;
+        uniform mat4 normalMat;
+
+        varying vec3 normalInterp;
+        varying vec3 vertPos;
+        varying vec3 eyePos; // Added varying variable for eye position
+
+        varying vec4 lightPosition;
+        varying vec4 ambientProduct, diffuseProduct, specularProduct;
+
+        uniform float Ka;
+        uniform float Kd;
+        uniform float Ks;
+        uniform vec3 ambientColor;
+        uniform vec3 diffuseColor;
+        uniform vec3 specularColor;
+        uniform float shininessVal;
+        uniform vec3 lightPos;
+
+        void main() {
+            vec4 vertPos4 = modelViewMatrix * vPosition;
+            vertPos = vec3(vertPos4) / vertPos4.w;
+            normalInterp = normalize(mat3(normalMat) * vNormal); // Use mat3 to extract upper-left 3x3 matrix for normals
             
-            uniform mat4 modelViewMatrix;
-            uniform mat4 projectionMatrix;
-            uniform vec3 lightPos; // Light source position
+            // Calculate lighting products
+            ambientProduct = vec4(Ka * ambientColor, 1.0);
+            diffuseProduct = vec4(Kd * diffuseColor, 1.0);
+            specularProduct = vec4(Ks * specularColor, 1.0);
             
-            varying vec3 normalInterp;
-            varying vec3 vertPos;
+            lightPosition = modelViewMatrix * vec4(lightPos, 1.0);
+            
+            // Calculate eye position in view space
+            eyePos = -vec3(modelViewMatrix * vPosition);
+            
+            gl_Position = projectionMatrix * vertPos4;
+        }
+    </script>
+
+    <script id="fragment-shader" type="x-shader/x-fragment">
+        precision mediump float;
+    
+        varying vec3 normalInterp;  // Surface normal
+        varying vec3 vertPos;       // Vertex position
+    
+        varying vec3 normal;
+        varying vec4 lightPosition;
+        varying vec4 ambientProduct, diffuseProduct, specularProduct;
         
-            void main() 
-            {
-                vec4 vertPos4 = modelViewMatrix * vPosition;
-                vertPos = vec3(vertPos4) / vertPos4.w;
-                normalInterp = normalize(mat3(modelViewMatrix) * vNormal);
-                gl_Position = projectionMatrix * vertPos4;
-            }            
-        </script>
-         
-        
-        
-        <script id="fragment-shader" type="x-shader/x-fragment">
-            precision mediump float;
-        
-            uniform float Ka;   // Ambient reflection coefficient
-            uniform float Kd;   // Diffuse reflection coefficient
-            uniform float Ks;   // Specular reflection coefficient
-            uniform float shininessVal; // Shininess
-        
-            uniform vec3 ambientColor;
-            uniform vec3 diffuseColor;
-            uniform vec3 specularColor;
-        
-            uniform int mode;   // Rendering mode
-        
-            varying vec3 normalInterp;
-            varying vec3 vertPos;
-        
-            uniform vec3 lightPos;
-        
-            void main() 
-            {
-                vec3 N = normalize(normalInterp);
-                vec3 L = normalize(lightPos - vertPos);
-        
-                // Lambert's cosine law
-                float lambertian = max(dot(N, L), 0.0);
-                float specular = 0.0;
-        
-                if (lambertian > 0.0) {
-                    vec3 R = reflect(-L, N);      // Reflected light vector
-                    vec3 V = normalize(-vertPos); // Vector to viewer
-        
-                    // Compute the specular term
-                    float specAngle = max(dot(R, V), 0.0);
-                    specular = pow(specAngle, shininessVal);
-                }
-        
-                vec3 ambientOutput = Ka * ambientColor;
-                vec3 diffuseOutput = Kd * lambertian * diffuseColor;
-                vec3 specularOutput = Ks * specular * specularColor;
-        
-                vec3 finalColor;
-        
-                // Output final color based on the rendering mode
-                if (mode == 2) finalColor = ambientOutput;
-                else if (mode == 3) finalColor = diffuseOutput;
-                else if (mode == 4) finalColor = specularOutput;
-                else finalColor = ambientOutput + diffuseOutput + specularOutput;
-        
-                gl_FragColor = vec4(finalColor, 1.0);
+        uniform float Ka;
+        uniform float Kd;
+        uniform float Ks;
+        uniform vec3 ambientColor;
+        uniform vec3 diffuseColor;
+        uniform vec3 specularColor;
+        uniform int mode;   // Rendering mode
+        uniform float shininessVal; // Shininess
+    
+        void main() {
+            vec3 N = normalize(normalInterp);
+            vec3 L = normalize(lightPosition.xyz - vertPos);
+    
+            // Lambert's cosine law
+            float lambertian = max(dot(N, L), 0.0);
+    
+            float specular = 0.0;
+    
+            if (lambertian > 0.0) {
+                vec3 R = reflect(-L, N);      // Reflected light vector
+                vec3 V = normalize(-vertPos); // Vector to viewer
+    
+                // Compute the specular term
+                float specAngle = max(dot(R, V), 0.0);
+                specular = pow(specAngle, shininessVal);
             }
-        </script>
-        
+    
+            // Output final color based on the rendering mode
+            if (mode == 2) {
+                gl_FragColor = ambientProduct;  // Only ambient
+            } else if (mode == 3) {
+                gl_FragColor = diffuseProduct;  // Only diffuse
+            } else if (mode == 4) {
+                gl_FragColor = vec4(specular, specular, specular, 1.0);  // Only specular
+            } else {
+                gl_FragColor = ambientProduct + diffuseProduct + vec4(specular * specularProduct.rgb, 1.0);  // Full lighting
+            }
+        }
+    </script>
 </head>
+
 <body>
     <div id="splash-screen" class="splashscreen">
         <h2>3D Articulated Model</h2>
@@ -100,11 +119,12 @@
         <div class="header">
             <span class="logo">3D Articulated Model</span>
         </div>
-    
+
         <div class="main-container">
-            <div id="controls-container" class="controls-container">      
+            <div id="controls-container" class="controls-container">
                 <ul class="submenu" onwheel="handleMouseWheel(event)">
-                    <li data-content="hierarchical" class="active" onclick="showContent('hierarchical')">Hierarchical Modelling</li>
+                    <li data-content="hierarchical" class="active" onclick="showContent('hierarchical')">Hierarchical
+                        Modelling</li>
                     <li data-content="lightsource" onclick="showContent('lightsource')">Light Sources</li>
                     <li data-content="material" onclick="showContent('material')">Material Properties</li>
                     <li data-content="viewshading" onclick="showContent('viewshading')">View & Shading</li>
@@ -115,137 +135,175 @@
                     <div class="row">
                         <div class="col-12">
                             <div id="slider11">
-                                <label for="global_rotation" class="title">Global Rotation Angle (Z-axis) :</label><output class="control_slider_bubble" id="global_rotation_output"></output>
+                                <label for="global_rotation" class="title">Global Rotation Angle (Z-axis)
+                                    :</label><output class="control_slider_bubble" id="global_rotation_output"></output>
                                 <br>
-                                <input id="slide" class="control_silder" type="range" min="-180" max="180" step="10" value="0"/>
+                                <input id="slide" class="control_silder" type="range" min="-180" max="180" step="10"
+                                    value="0" />
                             </div>
-            
+
                             <div id="slider12">
-                                <label for="positionX" class="title">Global Position X :</label><output class="control_slider_bubble" id="positionX_output"></output>
+                                <label for="positionX" class="title">Global Position X :</label><output
+                                    class="control_slider_bubble" id="positionX_output"></output>
                                 <br>
-                                <input id="slide" class="control_silder" type="range" min="-100" max="800" step="10" value="400"/>
+                                <input id="slide" class="control_silder" type="range" min="-100" max="800" step="10"
+                                    value="400" />
                             </div>
-            
+
                             <div id="slider13">
-                                <label for="positionY" class="title">Global Position Y :</label><output class="control_slider_bubble" id="positionY_output"></output>
+                                <label for="positionY" class="title">Global Position Y :</label><output
+                                    class="control_slider_bubble" id="positionY_output"></output>
                                 <br>
-                                <input id="slide" class="control_silder" type="range" min="-100" max="800" step="10" value="400"/>
+                                <input id="slide" class="control_silder" type="range" min="-100" max="800" step="10"
+                                    value="400" />
                             </div>
                         </div>
                     </div>
-                    <br><hr>
+                    <br>
+                    <hr>
                     <div class="row">
                         <div class="col-12">
                             <div id="slider14">
-                                <label for="torso1" class="title">Torso X-axis Angle :</label><output class="control_slider_bubble" id="torsoX_output"></output>
+                                <label for="torso1" class="title">Torso X-axis Angle :</label><output
+                                    class="control_slider_bubble" id="torsoX_output"></output>
                                 <br>
-                                <input id="slide" class="control_silder" type="range" min="-180" max="180" step="10" value="0"/>
+                                <input id="slide" class="control_silder" type="range" min="-180" max="180" step="10"
+                                    value="0" />
                             </div>
-    
+
                             <div id="slider0">
-                                <label for="torso" class="title">Torso Y-axis Angle :</label><output class="control_slider_bubble" id="torsoY_output"></output>
+                                <label for="torso" class="title">Torso Y-axis Angle :</label><output
+                                    class="control_slider_bubble" id="torsoY_output"></output>
                                 <br>
-                                <input id="slide" class="control_silder" type="range" min="-180" max="180" step="10" value="60"/>
+                                <input id="slide" class="control_silder" type="range" min="-180" max="180" step="10"
+                                    value="60" />
                             </div>
-                
+
                             <div id="slider1">
-                                <label for="torso" class="title">Head Top & Bottom Angle :</label><output class="control_slider_bubble" id="head1_output"></output>
+                                <label for="torso" class="title">Head Top & Bottom Angle :</label><output
+                                    class="control_slider_bubble" id="head1_output"></output>
                                 <br>
-                                <input id="slide" class="control_silder" type="range" min="-50" max="50" step="10" value="0" />
+                                <input id="slide" class="control_silder" type="range" min="-50" max="50" step="10"
+                                    value="0" />
                             </div>
-                
+
                             <div id="slider10">
-                                <label for="head2" class="title">Head Left & Right Angle :</label><output class="control_slider_bubble" id="head2_output"></output>
+                                <label for="head2" class="title">Head Left & Right Angle :</label><output
+                                    class="control_slider_bubble" id="head2_output"></output>
                                 <br>
-                                <input id="slide" class="control_silder" type="range" min="-180" max="180" step="10" value="0"/>
+                                <input id="slide" class="control_silder" type="range" min="-180" max="180" step="10"
+                                    value="0" />
                             </div>
                         </div>
                     </div>
-                    <br><hr>
+                    <br>
+                    <hr>
                     <div class="row">
                         <div class="col-12">
                             <div id="slider2">
-                                <label for="leftupperarm" class="title">Left Upper Arm Angle :</label><output class="control_slider_bubble" id="leftupperarm_output"></output>
+                                <label for="leftupperarm" class="title">Left Upper Arm Angle :</label><output
+                                    class="control_slider_bubble" id="leftupperarm_output"></output>
                                 <br>
-                                <input id="slide" class="control_silder" type="range" min="-180" max="60" step="10" value="-160"/>
+                                <input id="slide" class="control_silder" type="range" min="-180" max="60" step="10"
+                                    value="-160" />
                             </div>
-            
+
                             <div id="slider3">
-                                <label for="leftlowerarm" class="title">Left Lower Arm Angle :</label><output class="control_slider_bubble" id="leftlowerarm_output"></output>
+                                <label for="leftlowerarm" class="title">Left Lower Arm Angle :</label><output
+                                    class="control_slider_bubble" id="leftlowerarm_output"></output>
                                 <br>
-                                <input id="slide" class="control_silder" type="range" min="-60" max="60" step="10" value="60" />
+                                <input id="slide" class="control_silder" type="range" min="-60" max="60" step="10"
+                                    value="60" />
                             </div>
-            
-                            <div id="slider4" >
-                                <label for="rightupperarm" class="title">Right Upper Arm Angle :</label><output class="control_slider_bubble" id="rightupperarm_output"></output>
+
+                            <div id="slider4">
+                                <label for="rightupperarm" class="title">Right Upper Arm Angle :</label><output
+                                    class="control_slider_bubble" id="rightupperarm_output"></output>
                                 <br>
-                                <input id="slide" class="control_silder" type="range" min="-60" max="180" step="10" value="160" />
+                                <input id="slide" class="control_silder" type="range" min="-60" max="180" step="10"
+                                    value="160" />
                             </div>
-            
+
                             <div id="slider5">
-                                <label for="rightlowerarm" class="title">Right Lower Arm Angle :</label><output class="control_slider_bubble" id="rightlowerarm_output"></output>
+                                <label for="rightlowerarm" class="title">Right Lower Arm Angle :</label><output
+                                    class="control_slider_bubble" id="rightlowerarm_output"></output>
                                 <br>
-                                <input id="slide" class="control_silder" type="range" min="-60" max="60" step="10" value="-60"/>
+                                <input id="slide" class="control_silder" type="range" min="-60" max="60" step="10"
+                                    value="-60" />
                             </div>
                         </div>
                     </div>
-                        
+
                     <div class="row">
                         <div class="col-12">
                             <div id="slider6">
-                                <label for="leftupperleg" class="title">Left Upper Leg Angle :</label><output class="control_slider_bubble" id="leftupperleg_output"></output>
+                                <label for="leftupperleg" class="title">Left Upper Leg Angle :</label><output
+                                    class="control_slider_bubble" id="leftupperleg_output"></output>
                                 <br>
-                                <input id="slide" class="control_silder" type="range"min="-180" max="-30" step="10" value="-180" />
+                                <input id="slide" class="control_silder" type="range" min="-180" max="-30" step="10"
+                                    value="-180" />
                             </div>
-            
+
                             <div id="slider7">
-                                <label for="leftlowerleg" class="title">Left Lower Leg Angle :</label><output class="control_slider_bubble" id="leftlowerleg_output"></output>
+                                <label for="leftlowerleg" class="title">Left Lower Leg Angle :</label><output
+                                    class="control_slider_bubble" id="leftlowerleg_output"></output>
                                 <br>
-                                <input id="slide" class="control_silder" type="range" min="-60" max="60" step="10" value="10" />
+                                <input id="slide" class="control_silder" type="range" min="-60" max="60" step="10"
+                                    value="10" />
                             </div>
-            
+
                             <div id="slider8">
-                                <label for="rightupperleg" class="title">Right Upper Leg Angle :</label><output class="control_slider_bubble" id="rightupperleg_output"></output>
+                                <label for="rightupperleg" class="title">Right Upper Leg Angle :</label><output
+                                    class="control_slider_bubble" id="rightupperleg_output"></output>
                                 <br>
-                                <input id="slide" class="control_silder" type="range" min="30" max="180" step="10" value="180" />
+                                <input id="slide" class="control_silder" type="range" min="30" max="180" step="10"
+                                    value="180" />
                             </div>
-            
+
                             <div id="slider9">
-                                <label for="rightlowerleg" class="title">Right Lower Leg Angle :</label><output class="control_slider_bubble" id="rightlowerleg_output"></output>
+                                <label for="rightlowerleg" class="title">Right Lower Leg Angle :</label><output
+                                    class="control_slider_bubble" id="rightlowerleg_output"></output>
                                 <br>
-                                <input id="slide" class="control_silder" type="range" min="-60" max="60" step="10" value="-10" />
+                                <input id="slide" class="control_silder" type="range" min="-60" max="60" step="10"
+                                    value="-10" />
                             </div>
                         </div>
-                    </div> 
+                    </div>
                 </div>
-    
+
                 <div class="lightsource">
                     <hr>
                     <div class="row">
                         <div class="col-12">
-                            
+
 
                             <div id="lightPositionSection">
                                 <hr>
-                                <label for="lightX" class="title">Light Position X :</label><output class="control_slider_bubble" id="lightxValue"></output>
+                                <label for="lightX" class="title">Light Position X :</label><output
+                                    class="control_slider_bubble" id="lightxValue"></output>
                                 <br>
-                                <input id="lightX" class="control_silder" type="range" min="-100" max="100" step="1" value="1" />
-                                
-                                <label for="lightY" class="title">Light Position Y :</label><output class="control_slider_bubble" id="lightyValue"></output>
+                                <input id="lightX" class="control_silder" type="range" min="-100" max="100" step="1"
+                                    value="1" />
+
+                                <label for="lightY" class="title">Light Position Y :</label><output
+                                    class="control_slider_bubble" id="lightyValue"></output>
                                 <br>
-                                <input id="lightY" class="control_silder" type="range" min="-100" max="100" step="1" value="1" />
-                                
-                                <label for="lightZ" class="title">Light Position Z :</label><output class="control_slider_bubble" id="lightzValue"></output>
+                                <input id="lightY" class="control_silder" type="range" min="-100" max="100" step="1"
+                                    value="1" />
+
+                                <label for="lightZ" class="title">Light Position Z :</label><output
+                                    class="control_slider_bubble" id="lightzValue"></output>
                                 <br>
-                                <input id="lightZ" class="control_silder" type="range" min="-100" max="100" step="1" value="-1" />
+                                <input id="lightZ" class="control_silder" type="range" min="-100" max="100" step="1"
+                                    value="-1" />
                             </div>
                         </div>
                     </div>
                 </div>
 
 
-                
-    
+
+
                 <div class="material">
                     <hr>
                     <div class="row">
@@ -260,42 +318,50 @@
                             </select>
 
                             <!-- Ambient Reflection Slider -->
-                            <label for="ambientReflection" class="title">Ambient Reflection (Ka):</label><output class="control_slider_bubble" id="ambientReflectionValue"></output>
+                            <label for="ambientReflection" class="title">Ambient Reflection (Ka):</label><output
+                                class="control_slider_bubble" id="ambientReflectionValue"></output>
                             <br>
-                            <input id="ambientReflectionSlider" class="control_silder" type="range" min="0" max="1" step="0.1" value="1.0">
-                            
+                            <input id="ambientReflectionSlider" class="control_silder" type="range" min="0" max="1"
+                                step="0.1" value="1.0">
+
 
                             <!-- Diffuse Reflection Slider -->
-                            <label for="diffuseReflection" class="title">Diffuse Reflection (Kd):</label><output class="control_slider_bubble" id="diffuseReflectionValue"></output>
+                            <label for="diffuseReflection" class="title">Diffuse Reflection (Kd):</label><output
+                                class="control_slider_bubble" id="diffuseReflectionValue"></output>
                             <br>
-                            <input id="diffuseReflectionSlider" class="control_silder" type="range" min="0" max="1" step="0.1" value="1.0">
-                            
+                            <input id="diffuseReflectionSlider" class="control_silder" type="range" min="0" max="1"
+                                step="0.1" value="1.0">
+
 
                             <!-- Specular Reflection Slider -->
-                            <label for="specularReflection" class="title">Specular Reflection (Ks):</label><output class="control_slider_bubble" id="specularReflectionValue"></output>
+                            <label for="specularReflection" class="title">Specular Reflection (Ks):</label><output
+                                class="control_slider_bubble" id="specularReflectionValue"></output>
                             <br>
-                            <input id="specularReflectionSlider" class="control_silder" type="range" min="0" max="1" step="0.1" value="1.0">
-                            
+                            <input id="specularReflectionSlider" class="control_silder" type="range" min="0" max="1"
+                                step="0.1" value="1.0">
+
 
                             <!-- Shininess Slider -->
-                            <label for="shininess" class="title">Shininess:</label><output class="control_slider_bubble" id="shininessValue"></output>
+                            <label for="shininess" class="title">Shininess:</label><output class="control_slider_bubble"
+                                id="shininessValue"></output>
                             <br>
-                            <input id="shininessSlider" class="control_silder" type="range" min="0" max="100" step="1" value="80"> 
+                            <input id="shininessSlider" class="control_silder" type="range" min="0" max="100" step="1"
+                                value="80">
                         </div>
-                        
+
                         <div class="col-4">
                             <label for="" class="title">Ambient color :</label>
                             <br>
                             <input type="color" id="colorSelectorAmbient" value="#00AAFF">
                         </div>
-        
+
                         <div class="col-4">
                             <label for="" class="title">Diffuse Color :</label>
                             <br>
                             <input type="color" id="colorSelectorDiffuse" value="#cc6600">
                             <!-- <div id='colorSelectorDiffuse' class='colorSelector'><div style='background-color:rgb(204,102,0)'></div></div> -->
                         </div>
-        
+
                         <div class="col-4">
                             <label for="" class="title">Specular Color :</label>
                             <br>
@@ -304,34 +370,34 @@
                         </div>
                     </div>
                 </div>
-    
+
                 <div class="viewshading">
                     <hr>
                     <h2>Hi3</h2>
                 </div>
-    
+
                 <script>
                     // JQuery function to show each content based on navbar
                     function showContent(contentType) {
                         // Hide all content divs
                         $('.hierarchical, .lightsource, .material, .viewshading').hide();
-    
+
                         // Remove active class from all li elements
                         $('.submenu li').removeClass('active');
-    
+
                         // Show the selected content div
                         $('.' + contentType).show();
-    
+
                         // Add active class to the clicked li element
                         $('.submenu li[data-content="' + contentType + '"]').addClass('active');
                     }
-    
+
                     function handleMouseWheel(event) {
                         event.preventDefault();
-                    
+
                         const container = document.querySelector('.submenu');
                         const scrollAmount = 30; // Adjust the scroll amount as needed
-                    
+
                         container.scrollLeft -= event.deltaY > 0 ? -scrollAmount : scrollAmount;
                     }
 
@@ -343,15 +409,17 @@
                         gl.uniform1i(gl.getUniformLocation(program, "mode"), mode);
                         render();
                     }
-                    
+
                 </script>
             </div>
-            
+
             <div class="canvas-container">
-                <canvas id="gl-canvas" width="1200" height="700">Oops ... your browser doesn't support the HTML5 canvas element</canvas>
+                <canvas id="gl-canvas" width="1200" height="700">Oops ... your browser doesn't support the HTML5 canvas
+                    element</canvas>
             </div>
         </div>
     </div>
 
 </body>
+
 </html>
