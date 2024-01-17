@@ -326,7 +326,7 @@ window.onload = function init() {
 
     instanceMatrix = mat4();
 
-    projectionMatrix = ortho(-40.0, 40.0, -30.0, 30.0, -40.0, 40.0);
+    projectionMatrix = ortho(-20.0, 20.0, -15.0, 15.0, -30.0, 30.0);
     modelViewMatrix = mat4();
 
     gl.uniformMatrix4fv(gl.getUniformLocation(program, "modelViewMatrix"), false, flatten(modelViewMatrix));
@@ -504,36 +504,6 @@ window.onload = function init() {
     };
 
     // ---------- Light Source ----------
-    // Get the values from the light source sliders
-    var lightXSlider = document.getElementById("lightX");
-    var lightYSlider = document.getElementById("lightY");
-    var lightZSlider = document.getElementById("lightZ");
-
-    // Set up event listeners to update light position when sliders change
-    lightXSlider.addEventListener("input", updateLightPosition);
-    lightYSlider.addEventListener("input", updateLightPosition);
-    lightZSlider.addEventListener("input", updateLightPosition);
-
-    // Function to update the light position in the shader
-    function updateLightPosition() {
-        // Get the current values from the sliders
-        var lightX = parseFloat(lightXSlider.value);
-        var lightY = parseFloat(lightYSlider.value);
-        var lightZ = parseFloat(lightZSlider.value);
-
-        // Update the light position in the shader
-        gl.useProgram(program);
-
-        // Get the uniform location for the light position
-        var lightPosUniform = gl.getUniformLocation(program, "lightPos");
-
-        // Set the light position uniform in the shader
-        gl.uniform3f(lightPosUniform, lightX, lightY, lightZ);
-
-        // Render your scene
-        render();
-    }
-
     document.getElementById("ambientReflectionSlider").addEventListener("input", function () {
         // Get the current value of the slider
         var sliderValue = this.value;
