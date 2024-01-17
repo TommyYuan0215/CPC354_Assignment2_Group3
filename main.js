@@ -321,9 +321,7 @@ window.onload = function init() {
     gl.viewport( 0, 0, canvas.width, canvas.height );
     gl.clearColor(0, 0, 0, 0);
     
-    //
     //  Load shaders and initialize attribute buffers
-    //
     program = initShaders( gl, "vertex-shader", "fragment-shader");
     gl.useProgram( program);
 
@@ -338,8 +336,8 @@ window.onload = function init() {
     var Ks = 1.0;
     var shininessVal = 80.0;
     var ambientColor = vec3(0.0, 0.6, 1.0);  // Example ambient color (modify according to your scene)
-    var diffuseColor = vec3(1.0, 0.0, 1.0);  // Example diffuse color (modify according to your scene)
-    var specularColor = vec3(0.0, 0.0, 0.0); // Example specular color (modify according to your scene)
+    var diffuseColor = vec3(0.0, 0.0, 0.0);  // Example diffuse color (modify according to your scene)
+    var specularColor = vec3(1.0, 1.0, 1.0); // Example specular color (modify according to your scene)
     var mode = 1; // Example rendering mode (modify according to your needs)
 
     // Set the initial values for the uniforms in the shader
@@ -358,7 +356,6 @@ window.onload = function init() {
 
     projectionMatrix = ortho(-40.0, 40.0, -30.0, 30.0, -40.0, 40.0);
     modelViewMatrix = mat4();
-
         
     gl.uniformMatrix4fv(gl.getUniformLocation( program, "modelViewMatrix"), false, flatten(modelViewMatrix) );
     gl.uniformMatrix4fv( gl.getUniformLocation( program, "projectionMatrix"), false, flatten(projectionMatrix) );
@@ -375,6 +372,7 @@ window.onload = function init() {
     var vPosition = gl.getAttribLocation( program, "vPosition" );
     gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
     gl.enableVertexAttribArray( vPosition );
+
 
     // Initial State for each of the output value 
     document.getElementById("torsoX_output").textContent = 0;
@@ -534,7 +532,7 @@ window.onload = function init() {
         Kd = sliderValue;
 
         // Use the updated Ka value in your rendering logic
-        gl.uniform1f(gl.getUniformLocation(program, "Kd"), Ka);
+        gl.uniform1f(gl.getUniformLocation(program, "Kd"), Kd);
     });
 
       document.getElementById("specularReflectionSlider").addEventListener("input", function() {
@@ -548,10 +546,10 @@ window.onload = function init() {
         Ks = sliderValue;
 
         // Use the updated Ka value in your rendering logic
-        gl.uniform1f(gl.getUniformLocation(program, "Ks"), Ka);
+        gl.uniform1f(gl.getUniformLocation(program, "Ks"), Ks);
     });
 
-    // ----------- Light Source Control --------
+    // ----------- Material Properties Control --------
     
     // Ambient color input
     document.getElementById("colorSelectorAmbient").addEventListener("input", function() {
@@ -575,10 +573,10 @@ window.onload = function init() {
         // Extract RGB components from the color input
         var rgb = hexToRgb(colorValue);
 
-        // Update specularColor with the new RGB values
+        // Update diffuseColor with the new RGB values
         diffuseColor = vec3(rgb.r / 255, rgb.g / 255, rgb.b / 255);
 
-        // Use the updated ambientColor value in your rendering logic
+        // Use the updated diffuseColor value in your rendering logic
         gl.uniform3fv(gl.getUniformLocation(program, "diffuseColor"), flatten(diffuseColor));
     });
 
@@ -589,10 +587,10 @@ window.onload = function init() {
         // Extract RGB components from the color input
         var rgb = hexToRgb(colorValue);
 
-        // Update ambientColor with the new RGB values
+        // Update specularColor with the new RGB values
         specularColor = vec3(rgb.r / 255, rgb.g / 255, rgb.b / 255);
 
-        // Use the updated ambientColor value in your rendering logic
+        // Use the updated specularColor value in your rendering logic
         gl.uniform3fv(gl.getUniformLocation(program, "specularColor"), flatten(specularColor));
     });
 
