@@ -37,6 +37,11 @@ var vertices = [
     vec4(0.5, -0.5, -0.5, 1.0)
 ];
 
+// Camera Function Init
+var eye = vec3(0, 0, 10); // Initial camera position
+var at = vec3(0, 0, 0);   // Look-at point
+var up = vec3(0, 1, 0);   // Up vector
+
 
 var torsoId = 0;
 var headId = 1;
@@ -217,7 +222,9 @@ function torso() {
     instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * torsoHeight, 0.0));
     instanceMatrix = mult(instanceMatrix, scale4(torsoWidth, torsoHeight, torsoWidth));
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-    for (var i = 0; i < 6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
+    for (var i = 0; i < 6; i++) {
+        gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
+    }
 }
 
 function head() {
@@ -225,7 +232,9 @@ function head() {
     instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * headHeight, 0.0));
     instanceMatrix = mult(instanceMatrix, scale4(headWidth, headHeight, headWidth));
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-    for (var i = 0; i < 6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
+    for (var i = 0; i < 6; i++) {
+        gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
+    }
 }
 
 function leftUpperArm() {
@@ -233,7 +242,9 @@ function leftUpperArm() {
     instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * upperArmHeight, 0.0));
     instanceMatrix = mult(instanceMatrix, scale4(upperArmWidth, upperArmHeight, upperArmWidth));
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-    for (var i = 0; i < 6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
+    for (var i = 0; i < 6; i++) {
+        gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
+    }
 }
 
 function leftLowerArm() {
@@ -241,7 +252,9 @@ function leftLowerArm() {
     instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * lowerArmHeight, 0.0));
     instanceMatrix = mult(instanceMatrix, scale4(lowerArmWidth, lowerArmHeight, lowerArmWidth));
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-    for (var i = 0; i < 6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
+    for (var i = 0; i < 6; i++) {
+        gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
+    }
 }
 
 function rightUpperArm() {
@@ -249,7 +262,9 @@ function rightUpperArm() {
     instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * upperArmHeight, 0.0));
     instanceMatrix = mult(instanceMatrix, scale4(upperArmWidth, upperArmHeight, upperArmWidth));
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-    for (var i = 0; i < 6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
+    for (var i = 0; i < 6; i++) {
+        gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
+    }
 }
 
 function rightLowerArm() {
@@ -257,7 +272,9 @@ function rightLowerArm() {
     instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * lowerArmHeight, 0.0));
     instanceMatrix = mult(instanceMatrix, scale4(lowerArmWidth, lowerArmHeight, lowerArmWidth));
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-    for (var i = 0; i < 6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
+    for (var i = 0; i < 6; i++) {
+        gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
+    }
 }
 
 function leftUpperLeg() {
@@ -265,7 +282,9 @@ function leftUpperLeg() {
     instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * upperLegHeight, 0.0));
     instanceMatrix = mult(instanceMatrix, scale4(upperLegWidth, upperLegHeight, upperLegWidth));
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-    for (var i = 0; i < 6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
+    for (var i = 0; i < 6; i++) {
+        gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
+    }
 }
 
 function leftLowerLeg() {
@@ -273,7 +292,9 @@ function leftLowerLeg() {
     instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * lowerLegHeight, 0.0));
     instanceMatrix = mult(instanceMatrix, scale4(lowerLegWidth, lowerLegHeight, lowerLegWidth));
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-    for (var i = 0; i < 6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
+    for (var i = 0; i < 6; i++) {
+        gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
+    }
 }
 
 function rightUpperLeg() {
@@ -281,7 +302,9 @@ function rightUpperLeg() {
     instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * upperLegHeight, 0.0));
     instanceMatrix = mult(instanceMatrix, scale4(upperLegWidth, upperLegHeight, upperLegWidth));
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-    for (var i = 0; i < 6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
+    for (var i = 0; i < 6; i++) {
+        gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
+    }
 }
 
 function rightLowerLeg() {
@@ -289,7 +312,9 @@ function rightLowerLeg() {
     instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * lowerLegHeight, 0.0));
     instanceMatrix = mult(instanceMatrix, scale4(lowerLegWidth, lowerLegHeight, lowerLegWidth))
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-    for (var i = 0; i < 6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
+    for (var i = 0; i < 6; i++) {
+        gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
+    }
 }
 
 function quad(a, b, c, d) {
@@ -327,7 +352,7 @@ window.onload = function init() {
     instanceMatrix = mat4();
 
     projectionMatrix = ortho(-20.0, 20.0, -15.0, 15.0, -30.0, 30.0);
-    modelViewMatrix = mat4();
+    modelViewMatrix = lookAt(eye, at, up);
 
     gl.uniformMatrix4fv(gl.getUniformLocation(program, "modelViewMatrix"), false, flatten(modelViewMatrix));
     gl.uniformMatrix4fv(gl.getUniformLocation(program, "projectionMatrix"), false, flatten(projectionMatrix));
@@ -393,6 +418,10 @@ window.onload = function init() {
     document.getElementById("lightxValue").textContent = 1;
     document.getElementById("lightyValue").textContent = 1;
     document.getElementById("lightzValue").textContent = -1;
+
+    document.getElementById("cameraXValue").textContent = 0;
+    document.getElementById("cameraYValue").textContent = 0;
+    document.getElementById("cameraZValue").textContent = 10;
 
 
     // On change function for each of the hierarchical model
@@ -625,10 +654,50 @@ window.onload = function init() {
         document.getElementById("lightzValue").textContent = sliderValue;
     });
 
+    // -------- View & Shading --------
+    document.getElementById("cameraXSlider").addEventListener("input", function () {
+        // Get the current value of the slider
+        var sliderValue = this.value;
+        eye[0] = parseFloat(this.value);
+        updateCamera();
+
+        // Update the content of the output element with the slider value
+        document.getElementById("cameraXValue").textContent = sliderValue;
+    });
+
+    document.getElementById("cameraYSlider").addEventListener("input", function () {
+        // Get the current value of the slider
+        var sliderValue = this.value;
+        eye[1] = parseFloat(this.value);
+        updateCamera();
+
+        // Update the content of the output element with the slider value
+        document.getElementById("cameraYValue").textContent = sliderValue;
+    });
+
+
+    document.getElementById("cameraZSlider").addEventListener("input", function () {
+        // Get the current value of the slider
+        var sliderValue = this.value;
+        eye[2] = parseFloat(this.value);
+        updateCamera();
+
+        // Update the content of the output element with the slider value
+        document.getElementById("cameraZValue").textContent = sliderValue;
+    });
+
+
 
 
     for (i = 0; i < numNodes; i++) initNodes(i);
 
+    render();
+}
+
+// Function to update the camera and trigger a re-render
+function updateCamera() {
+    modelViewMatrix = lookAt(eye, at, up);
+    gl.uniformMatrix4fv(gl.getUniformLocation(program, "modelViewMatrix"), false, flatten(modelViewMatrix));
     render();
 }
 

@@ -374,7 +374,33 @@
 
                 <div class="viewshading">
                     <hr>
-                    <h2>Hi3</h2>
+                    <div class="row">
+                        <!-- X-axis slider -->
+                        <div class="col-12">
+                            <label for="cameraX" class="title">X-axis Camera</label><output class="control_slider_bubble"
+                            id="cameraXValue"></output>
+                            <br>
+                            <input type="range" id="cameraXSlider" class="control_silder" min="-20" max="20" step="0.1"
+                                value="0" />
+                        </div>
+
+                        <!-- Y-axis slider -->
+                        <div class="col-12">
+                            <label for="cameraY" class="title">Y-axis Camera</label><output class="control_slider_bubble"
+                            id="cameraYValue"></output>
+                            <br>
+                            <input type="range" id="cameraYSlider" class="control_silder" min="-20" max="20" step="0.1" value="0" />
+                        </div>
+
+                        <!-- Z-axis slider -->
+                        <div class="col-12">
+                            <label for="cameraZ" class="title">Z-axis Camera</label><output class="control_slider_bubble"
+                            id="cameraZValue"></output>
+                            <br>
+                            <input type="range" id="cameraZSlider" class="control_silder" min="-20" max="20" step="0.1" value="10" />
+                        </div>
+
+                    </div>
                 </div>
 
                 <script>
