@@ -122,7 +122,8 @@ body {
   border: 1px solid slateblue;
 }
 
-.lightmaterial {
+.light,
+.material {
   display: none;
 }
 
