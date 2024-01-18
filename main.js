@@ -366,12 +366,8 @@ window.onload = function init() {
     gl.vertexAttribPointer(vPosition, 4, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(vPosition);
 
-    // Set the light source position (modify according to your scene)
-    var lightPos = vec3(1.0, 1.0, -1.0);
-    var lightPosLoc = gl.getUniformLocation(program, "lightPos");
-    gl.uniform3fv(lightPosLoc, flatten(lightPos));
-
-    // Set initial values for the light properties
+    // Set initial values for the light and material properties
+    var lightPosition = vec3(1.0, 1.0, -1.0);
     var Ka = 1.0;
     var Kd = 1.0;
     var Ks = 1.0;
@@ -379,8 +375,9 @@ window.onload = function init() {
     var ambientColor = vec3(0.0, 0.6, 1.0);
     var diffuseColor = vec3(0.9, 0.5, 0.0); 
     var specularColor = vec3(1.0, 1.0, 1.0);
-
+    
     // Set the initial values for the uniforms in the shader
+    gl.uniform3fv(gl.getUniformLocation(program, "lightPosition"), flatten(lightPosition));
     gl.uniform1f(gl.getUniformLocation(program, "Ka"), Ka);
     gl.uniform1f(gl.getUniformLocation(program, "Kd"), Kd);
     gl.uniform1f(gl.getUniformLocation(program, "Ks"), Ks);

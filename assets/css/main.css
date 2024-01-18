@@ -116,8 +116,7 @@ body {
   border: 1px solid slateblue;
 }
 
-.lightsource,
-.material {
+.lightmaterial {
   display: none;
 }
 

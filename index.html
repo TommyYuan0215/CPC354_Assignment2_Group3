@@ -126,52 +126,58 @@
                 <ul class="submenu" onwheel="handleMouseWheel(event)">
                     <li data-content="hierarchical" class="active" onclick="showContent('hierarchical')">Hierarchical
                         Modelling</li>
-                    <li data-content="lightsource" onclick="showContent('lightsource')">Light Sources</li>
-                    <li data-content="material" onclick="showContent('material')">Material Properties</li>
+                    <li data-content="lightmaterial" onclick="showContent('lightmaterial')">Light Sources & Material
+                        Properties</li>
                 </ul>
                 <p><b>Note:</b> Use the scroll wheel to move the submenu from left to right.</p>
                 <div class="hierarchical">
                     <hr>
                     <div class="row">
-                        <!-- X-axis slider -->
                         <div class="col-12">
-                            <label for="cameraX" class="title">X-axis Camera</label><output
-                                class="control_slider_bubble" id="cameraXValue"></output>
-                            <br>
-                            <input type="range" id="cameraXSlider" class="control_silder" min="-20" max="20" step="0.1"
-                                value="0" />
-                        </div>
+                            <h6 class="text-center"><b>Camera Orientation (LookAt)</b></h6>
 
-                        <!-- Y-axis slider -->
-                        <div class="col-12">
-                            <label for="cameraY" class="title">Y-axis Camera</label><output
-                                class="control_slider_bubble" id="cameraYValue"></output>
-                            <br>
-                            <input type="range" id="cameraYSlider" class="control_silder" min="-20" max="20" step="0.1"
-                                value="0" />
-                        </div>
+                            <!-- X-axis Camera slider -->
+                            <div class="cameraXSlider">
+                                <label for="cameraX" class="title">X-axis Camera</label><output
+                                    class="control_slider_bubble" id="cameraXValue"></output>
+                                <br>
+                                <input type="range" id="cameraXSlider" class="control_silder" min="-20" max="20"
+                                    step="0.1" value="0" />
+                            </div>
 
-                        <!-- Z-axis slider -->
-                        <div class="col-12">
-                            <label for="cameraZ" class="title">Z-axis Camera</label><output
-                                class="control_slider_bubble" id="cameraZValue"></output>
-                            <br>
-                            <input type="range" id="cameraZSlider" class="control_silder" min="-20" max="20" step="0.1"
-                                value="10" />
+
+                            <!-- Y-axis Camera slider -->
+                            <div class="cameraYSlider">
+                                <label for="cameraY" class="title">Y-axis Camera</label><output
+                                    class="control_slider_bubble" id="cameraYValue"></output>
+                                <br>
+                                <input type="range" id="cameraYSlider" class="control_silder" min="-20" max="20"
+                                    step="0.1" value="0" />
+                            </div>
+
+                            <!-- Z-axis Camera slider -->
+                            <div class="cameraZSlider">
+                                <label for="cameraZ" class="title">Z-axis Camera</label><output
+                                    class="control_slider_bubble" id="cameraZValue"></output>
+                                <br>
+                                <input type="range" id="cameraZSlider" class="control_silder" min="-20" max="20"
+                                    step="0.1" value="10" />
+                            </div>
                         </div>
                     </div>
                     <hr>
                     <div class="row">
                         <div class="col-12">
                             <div id="slider11">
+                                <h6 class="text-center"><b>Direction of Movement</b></h6>
+
                                 <label for="positionX" class="title">Global Position X :</label><output
                                     class="control_slider_bubble" id="positionX_output"></output>
                                 <br>
                                 <input id="slide" class="control_silder" type="range" min="-100" max="800" step="10"
                                     value="400" />
                             </div>
-                        </div>
-                        <div class="col-12">
+
                             <div id="slider12">
                                 <label for="positionY" class="title">Global Position Y :</label><output
                                     class="control_slider_bubble" id="positionY_output"></output>
@@ -185,6 +191,8 @@
                     <hr>
                     <div class="row">
                         <div class="col-12">
+                            <h6 class="text-center"><b>Head of Humanoid Figure</b></h6>
+
                             <div id="slider1">
                                 <label for="torso" class="title">Head Top & Bottom Angle :</label><output
                                     class="control_slider_bubble" id="head1_output"></output>
@@ -206,6 +214,8 @@
                     <hr>
                     <div class="row">
                         <div class="col-12">
+                            <h6 class="text-center"><b>Body of Humanoid Figure</b></h6>
+
                             <div id="slider2">
                                 <label for="leftupperarm" class="title">Left Upper Arm Angle :</label><output
                                     class="control_slider_bubble" id="leftupperarm_output"></output>
@@ -277,14 +287,13 @@
                     </div>
                 </div>
 
-                <div class="lightsource">
-                    <hr>
+                <div class="lightmaterial">
                     <div class="row">
                         <div class="col-12">
-
-
                             <div id="lightPositionSection">
                                 <hr>
+                                <h6 class="text-center"><b>Light Source</b></h6>
+                                
                                 <label for="lightX" class="title">Light Position X :</label><output
                                     class="control_slider_bubble" id="lightxValue"></output>
                                 <br>
@@ -305,23 +314,22 @@
                             </div>
                         </div>
                     </div>
-                </div>
-
-
-
-
-                <div class="material">
                     <hr>
                     <div class="row">
                         <div class="col-12">
+                            <h6 class="text-center"><b>Rendering Mode</b></h6>
+                            
                             <!-- Mode of Rendering -->
-                            <label for="renderingMode" class="title">Ambient Reflection (Ka):</label>
-                            <select id="modeSelect" class="form-control-sm" onchange="modeSelector(this.value)">
+                            <select id="modeSelect" class="form-control" onchange="modeSelector(this.value)">
                                 <option value="1">Normal Mode</option>
                                 <option value="2">Ambient Mode only</option>
                                 <option value="3">Diffuse Mode only</option>
                                 <option value="4">Specular Mode only</option>
                             </select>
+
+                            <br>
+                            <hr>
+                            <h6 class="text-center"><b>Reflection Coefficient</b></h6>
 
                             <!-- Ambient Reflection Slider -->
                             <label for="ambientReflection" class="title">Ambient Reflection (Ka):</label><output
@@ -354,7 +362,10 @@
                             <input id="shininessSlider" class="control_silder" type="range" min="0" max="100" step="1"
                                 value="80">
                         </div>
-
+                    </div>
+                    <br>
+                    <hr>
+                    <div class="row">
                         <div class="col-4">
                             <label for="" class="title">Ambient color :</label>
                             <br>
@@ -365,14 +376,13 @@
                             <label for="" class="title">Diffuse Color :</label>
                             <br>
                             <input type="color" id="colorSelectorDiffuse" value="#cc6600">
-                            <!-- <div id='colorSelectorDiffuse' class='colorSelector'><div style='background-color:rgb(204,102,0)'></div></div> -->
+        
                         </div>
 
                         <div class="col-4">
                             <label for="" class="title">Specular Color :</label>
                             <br>
                             <input type="color" id="colorSelectorSpecular" value="#ffffff">
-                            <!-- <div id='colorSelectorSpecular' class='colorSelector'><div style='background-color:rgb(256,256,256)'></div></div> -->
                         </div>
                     </div>
                 </div>
@@ -381,7 +391,7 @@
                     // JQuery function to show each content based on navbar
                     function showContent(contentType) {
                         // Hide all content divs
-                        $('.hierarchical, .lightsource, .material').hide();
+                        $('.hierarchical, .lightmaterial').hide();
 
                         // Remove active class from all li elements
                         $('.submenu li').removeClass('active');
