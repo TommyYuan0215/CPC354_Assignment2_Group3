@@ -295,8 +295,12 @@
                         <div class="col-12">
                             <div id="lightPositionSection">
                                 <hr>
+                                <h6 class="text-center"><b>Background</b></h6>
+                                <label for="bgBrightness" class="title">Background Darkness</label><output
+                                    class="control_slider_bubble dark-background" id="bgBrightnessOutput"></output>
+                                <input type="range" id="brightnessSlider" class="control_silder" min="0" max="100" value="50" step="1">              
+                                <hr>
                                 <h6 class="text-center"><b>Light Source</b></h6>
-
                                 <label for="lightX" class="title">Light Position X :</label><output
                                     class="control_slider_bubble" id="lightxValue"></output>
                                 <br>
@@ -427,7 +431,7 @@
                 </script>
             </div>
 
-            <div class="canvas-container">
+            <div class="canvas-container" id="canvasContainer">
                 <canvas id="gl-canvas" width="1200" height="700">Oops ... your browser doesn't support the HTML5 canvas
                     element</canvas>
             </div>

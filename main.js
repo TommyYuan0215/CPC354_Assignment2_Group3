@@ -42,7 +42,6 @@ var eye = vec3(0, 0, 10); // Initial camera position
 var at = vec3(0, 0, 0);   // Look-at point
 var up = vec3(0, 1, 0);   // Up vector
 
-
 var torsoId = 0;
 var headId = 1;
 var head1Id = 1;
@@ -413,6 +412,8 @@ window.onload = function init() {
     document.getElementById("cameraYValue").textContent = 0;
     document.getElementById("cameraZValue").textContent = 10;
 
+    document.getElementById("bgBrightnessOutput").textContent = 50;
+
 
     // On change function for each of the hierarchical model
     document.getElementById("slider1").oninput = function () {
@@ -502,6 +503,15 @@ window.onload = function init() {
     };
 
     // ---------- Light Source ----------
+    document.getElementById("brightnessSlider").oninput = function () {
+          const brightnessValue = this.value;
+          var brightnessLevel = brightnessValue / 100;
+          var canvasContainer = document.getElementById("canvasContainer");
+
+          canvasContainer.style.setProperty('--brightness-level', brightnessLevel);
+          document.getElementById("bgBrightnessOutput").textContent = brightnessValue;
+        };
+
     document.getElementById("ambientReflectionSlider").addEventListener("input", function () {
         // Get the current value of the slider
         var sliderValue = this.value;
