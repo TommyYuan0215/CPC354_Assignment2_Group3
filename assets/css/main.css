@@ -53,21 +53,25 @@ body {
 .header {
   overflow: hidden;
   /* background-image: linear-gradient(red, yellow); */
-  background-image: url('../img/header.jpg');
-
+  background-image: url('../img/header.gif');
+  background-repeat: no-repeat;
+  background-size: 100% auto;
   padding: 20px 10px;
 }
 
 .header a {
-  float: left;
-  color: black;
+  float: right;
+  color: white;
   text-align: center;
   padding: 12px;
+  font-weight: bold;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   text-decoration: none;
   font-size: 16px;
   line-height: 25px;
   border-radius: 4px;
+  transition: ease-in 0.1s;
+  transform: scale(1);
 }
 
 .header .logo {
@@ -78,13 +82,12 @@ body {
 }
 
 .header a:hover {
-  background-color: #ddd;
-  color: black;
-}
-
-.header a.active {
-  background-color: dodgerblue;
+  background: linear-gradient(106.7deg, rgb(151, 150, 240) 12.1%, rgb(255, 206, 236) 63.2%);
   color: white;
+  cursor: pointer;
+  transition: ease-in 0.1s;
+  transform: scale(1.1);
+  text-decoration: none;
 }
 
 .header-right {
