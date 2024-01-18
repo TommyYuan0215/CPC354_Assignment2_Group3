@@ -1,5 +1,5 @@
 # CPC354_Assignment2_Group3 : Hierarchical Model / Articulated Model
-### This work is done by Group 3 Member
+### This assignment is done by Group 3 Member
 ##### 1. Tan Jun Lin (160989)
 ##### 2. Peh Jia Jin (161059)
 ##### 3. Teh Wen Jie (159769)
