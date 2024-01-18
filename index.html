@@ -12,6 +12,8 @@
     <script type="text/javascript" src="main.js"></script>
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
 
     <!-- JQuery link to run basic function-->
     <script src="assets/js/jquery-3.6.4.min.js"></script>
@@ -293,7 +295,7 @@
                             <div id="lightPositionSection">
                                 <hr>
                                 <h6 class="text-center"><b>Light Source</b></h6>
-                                
+
                                 <label for="lightX" class="title">Light Position X :</label><output
                                     class="control_slider_bubble" id="lightxValue"></output>
                                 <br>
@@ -318,7 +320,7 @@
                     <div class="row">
                         <div class="col-12">
                             <h6 class="text-center"><b>Rendering Mode</b></h6>
-                            
+
                             <!-- Mode of Rendering -->
                             <select id="modeSelect" class="form-control" onchange="modeSelector(this.value)">
                                 <option value="1">Normal Mode</option>
@@ -376,7 +378,7 @@
                             <label for="" class="title">Diffuse Color :</label>
                             <br>
                             <input type="color" id="colorSelectorDiffuse" value="#cc6600">
-        
+
                         </div>
 
                         <div class="col-4">
@@ -428,6 +430,12 @@
                 <canvas id="gl-canvas" width="1200" height="700">Oops ... your browser doesn't support the HTML5 canvas
                     element</canvas>
             </div>
+
+            <footer class="footer-basic">
+                <div class="social"><a href="https://github.com/TommyYuan0215/CPC354_Assignment2_Group3"><i
+                            class="icon ion-social-github"></i></a></div>
+                <p class="copyright">CPC354 Group 3 Assignment 2 © 2023/2024</p>
+            </footer>
         </div>
     </div>
 
