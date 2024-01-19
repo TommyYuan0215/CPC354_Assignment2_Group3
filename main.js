@@ -113,13 +113,12 @@ var specularProduct;
 // Set initial values for the light and material properties
 var lightPosition = vec4(1.0, 2.0, 3.0, 1.0);
 var lightAmbient = vec4(0.2, 0.2, 0.2, 1.0);
-var lightDiffuse = vec4(1.0, 1.0, 1.0, 1.0);
+var lightDiffuse = vec4(0.0, 0.0, 0.0, 1.0);
 var lightSpecular = vec4(1.0, 1.0, 1.0, 1.0);
 
 // Variables used to link to vertex shader
 var lightPositionLoc;
 var KaLoc, KdLoc, KsLoc;
-var isDirectional = true;
 var shininessLoc;
 
 var Ka = 1.0;
@@ -137,13 +136,7 @@ var ambientProductLoc, diffuseProductLoc, specularProductLoc;
 var shininessLoc;
 
 function updateLightSource() {
-    if (isDirectional) {
-        // Set up directional light properties
-        gl.uniform3fv(lightPositionLoc, vec3(1.0, 1.0, 1.0));
-    } else {
-        // Set up point light properties
-        gl.uniform3fv(lightPositionLoc, vec3(0.0, 0.0, 1.0));
-    }
+    gl.uniform3fv(lightPositionLoc, vec3(0.0, 0.0, 1.0));
 
     gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"), flatten(lightPosition));
 
@@ -157,7 +150,6 @@ function updateLightSource() {
 
     render();
 }
-
 
 
 //-------------------------------------------
@@ -441,15 +433,17 @@ window.onload = function init() {
     gl.vertexAttribPointer(vPosition, 4, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(vPosition);
 
+
+
     // Set the initial values for the uniforms in the shader
     gl.uniform3fv(gl.getUniformLocation(program, "lightPosition"), flatten(lightPosition));
     gl.uniform1f(gl.getUniformLocation(program, "Ka"), Ka);
     gl.uniform1f(gl.getUniformLocation(program, "Kd"), Kd);
     gl.uniform1f(gl.getUniformLocation(program, "Ks"), Ks);
     gl.uniform1f(gl.getUniformLocation(program, "shininessVal"), shininessVal);
-    gl.uniform3fv(gl.getUniformLocation(program, "materialAmbient"), flatten(materialAmbient));
-    gl.uniform3fv(gl.getUniformLocation(program, "materialDiffuse"), flatten(materialDiffuse));
-    gl.uniform3fv(gl.getUniformLocation(program, "materialSpecular"), flatten(materialSpecular));
+    gl.uniform4fv(gl.getUniformLocation(program, "ambientProduct"), flatten(mult(lightAmbient,materialAmbient)));
+    gl.uniform4fv(gl.getUniformLocation(program, "diffuseProduct"), flatten(mult(lightDiffuse,materialDiffuse)));
+    gl.uniform4fv(gl.getUniformLocation(program, "specularProduct"), flatten(mult(lightSpecular,materialSpecular)));
     gl.uniform1i(gl.getUniformLocation(program, "mode"), 1);  // Default mode is 1
     gl.uniform4fv(lightPositionLoc, flatten(lightPosition));
     gl.uniform1f(shininessLoc, materialShininess);
@@ -592,9 +586,7 @@ window.onload = function init() {
         var x = document.getElementById("ambientLightValue").textContent = sliderValue;
 
         lightAmbient = vec4(x, x, 0.1, 1.0);
-        lightAmbientbp = vec4(x, x, 0.1, 1.0);
         ambientProduct = mult(lightAmbient, materialAmbient);
-        ambientProductLoc = gl.uniform4fv(gl.getUniformLocation(program, "ambientProduct"), flatten(ambientProduct));
         gl.uniform4fv(gl.getUniformLocation(program, "ambientProduct"), flatten(ambientProduct));
         updateLightSource();
     });
@@ -606,9 +598,7 @@ window.onload = function init() {
         // Update the content of the output element with the slider value
         var x = document.getElementById("diffuseLightValue").textContent = sliderValue;
         lightDiffuse = vec4(x, x, 0.1, 1.0);
-        lightDiffusebp = vec4(x, x, 0.1, 1.0);
         diffuseProduct = mult(lightDiffuse, materialDiffuse);
-        // diffuseProductLoc = gl.uniform4fv(gl.getUniformLocation(program, "diffuseProduct"), flatten(diffuseProduct));
         gl.uniform4fv(gl.getUniformLocation(program, "diffuseProduct"), flatten(diffuseProduct));
         updateLightSource();
     });
@@ -620,9 +610,7 @@ window.onload = function init() {
         // Update the content of the output element with the slider value
         var x = document.getElementById("specularLightValue").textContent = sliderValue;
         lightSpecular = vec4(x, x, 0.1, 1.0);
-        lightSpecularbp = vec4(x, x, 0.1, 1.0);
         specularProduct = mult(lightSpecular, materialSpecular);
-        specularProductLoc = gl.uniform4fv(gl.getUniformLocation(program, "specularProduct"), flatten(specularProduct));
         gl.uniform4fv(gl.getUniformLocation(program, "specularProduct"), flatten(specularProduct));
         updateLightSource();
     });
@@ -683,45 +671,24 @@ window.onload = function init() {
     // =============================================================================
 
     document.getElementById("colorSelectorAmbient").addEventListener("input", function () {
-        // Get the current value of the color input
         var colorValue = this.value;
-
-        // Extract RGB components from the color input
-        var rgb = hexToRgb(colorValue);
-
-        // Update ambientColor with the new RGB values
-        ambientColor = vec3(rgb.r / 255, rgb.g / 255, rgb.b / 255);
-
-        // Use the updated ambientColor value in your rendering logic
-        gl.uniform3fv(gl.getUniformLocation(program, "ambientProduct"), flatten(ambientColor));
+        materialAmbient = hexToRgb(colorValue);
+        ambientProduct = mult(lightAmbient,materialAmbient);
+        gl.uniform4fv(gl.getUniformLocation(program, "ambientProduct"), flatten(ambientProduct));
     });
 
     document.getElementById("colorSelectorDiffuse").addEventListener("input", function () {
-        // Get the current value of the color input
         var colorValue = this.value;
-
-        // Extract RGB components from the color input
-        var rgb = hexToRgb(colorValue);
-
-        // Update diffuseColor with the new RGB values
-        diffuseColor = vec3(rgb.r / 255, rgb.g / 255, rgb.b / 255);
-
-        // Use the updated diffuseColor value in your rendering logic
-        gl.uniform3fv(gl.getUniformLocation(program, "diffuseProduct"), flatten(diffuseColor));
+        materialDiffuse = hexToRgb(colorValue);
+        diffuseProduct = mult(lightAmbient,materialDiffuse);
+        gl.uniform4fv(gl.getUniformLocation(program, "diffuseProduct"), flatten(diffuseProduct));
     });
 
     document.getElementById("colorSelectorSpecular").addEventListener("input", function () {
-        // Get the current value of the color input
         var colorValue = this.value;
-
-        // Extract RGB components from the color input
-        var rgb = hexToRgb(colorValue);
-
-        // Update specularColor with the new RGB values
-        specularColor = vec3(rgb.r / 255, rgb.g / 255, rgb.b / 255);
-
-        // Use the updated specularColor value in your rendering logic
-        gl.uniform3fv(gl.getUniformLocation(program, "specularProduct"), flatten(specularColor));
+        materialSpecular = hexToRgb(colorValue);
+        specularProduct = mult(lightAmbient,materialSpecular);
+        gl.uniform4fv(gl.getUniformLocation(program, "specularProduct"), flatten(specularProduct));
     });
 
 
@@ -817,17 +784,11 @@ function updateCamera() {
 
 // Function to convert hex color to RGB
 function hexToRgb(hex) {
-    // Remove the hash sign if present
-    hex = hex.replace(/^#/, '');
-
-    // Parse the hex value into RGB components
-    var bigint = parseInt(hex, 16);
-    var r = (bigint >> 16) & 255;
-    var g = (bigint >> 8) & 255;
-    var b = bigint & 255;
-
-    return { r, g, b };
-}
+    var r = parseInt(hex.substring(1, 3), 16) / 255;
+    var g = parseInt(hex.substring(3, 5), 16) / 255;
+    var b = parseInt(hex.substring(5, 7), 16) / 255;
+    return vec4(r, g, b, 1.0); 
+  }
 
 // =============================================================================
 // =============================Rendering Function==============================
