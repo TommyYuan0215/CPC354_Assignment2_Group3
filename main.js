@@ -431,7 +431,9 @@ window.onload = function init() {
     document.getElementById("lightxValue").textContent = 1;
     document.getElementById("lightyValue").textContent = 1;
     document.getElementById("lightzValue").textContent = -1;
-
+    document.getElementById("ambientLightValue").textContent = 1.0;
+    document.getElementById("diffuseLightValue").textContent = 1.0;
+    document.getElementById("specularLightValue").textContent = 1.0;
     document.getElementById("cameraXValue").textContent = 0;
     document.getElementById("cameraYValue").textContent = 0;
     document.getElementById("cameraZValue").textContent = 10;
@@ -533,7 +535,47 @@ window.onload = function init() {
     // =============================================================================
     // =======================Light Source Event Listener===========================
     // =============================================================================
+    document.getElementById("ambientLightSlider").addEventListener("input", function () {
+        // Get the current value of the slider
+        var sliderValue = this.value;
 
+        // Update the content of the output element with the slider value
+        document.getElementById("ambientLightValue").textContent = sliderValue;
+
+        // Update Ka with the slider value
+        // Ka = sliderValue;
+
+        // Use the updated Ka value in your rendering logic
+        //gl.uniform1f(gl.getUniformLocation(program, "Ka"), Ka);
+    });
+
+    document.getElementById("diffuseLightSlider").addEventListener("input", function () {
+        // Get the current value of the slider
+        var sliderValue = this.value;
+
+        // Update the content of the output element with the slider value
+        document.getElementById("diffuseLightValue").textContent = sliderValue;
+
+        // Update Ka with the slider value
+        // Ka = sliderValue;
+
+        // Use the updated Ka value in your rendering logic
+        //gl.uniform1f(gl.getUniformLocation(program, "Ka"), Ka);
+    });
+
+    document.getElementById("specularLightSlider").addEventListener("input", function () {
+        // Get the current value of the slider
+        var sliderValue = this.value;
+
+        // Update the content of the output element with the slider value
+        document.getElementById("specularLightValue").textContent = sliderValue;
+
+        // Update Ka with the slider value
+        // Ka = sliderValue;
+
+        // Use the updated Ka value in your rendering logic
+        //gl.uniform1f(gl.getUniformLocation(program, "Ka"), Ka);
+    });
 
     document.getElementById("brightnessSlider").oninput = function () {
         const brightnessValue = this.value;
