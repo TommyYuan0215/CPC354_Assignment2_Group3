@@ -394,44 +394,44 @@ window.onload = function init() {
     // Variables used to link to vertex shader
     var lightPositionLoc;
     var KaLoc, KdLoc, KsLoc;
-    var isDirectional = true; 
-    
+    var isDirectional = true;
+
     var shininessLoc;
 
     function updateLightSource() {
         if (isDirectional) {
-          // Set up directional light properties
-          gl.uniform3fv(lightPositionLoc, vec3(1.0, 1.0, 1.0));
-      } else {
-          // Set up point light properties
-          gl.uniform3fv(lightPositionLoc, vec3(0.0, 0.0, 1.0));
-      }
-      
+            // Set up directional light properties
+            gl.uniform3fv(lightPositionLoc, vec3(1.0, 1.0, 1.0));
+        } else {
+            // Set up point light properties
+            gl.uniform3fv(lightPositionLoc, vec3(0.0, 0.0, 1.0));
+        }
+
         gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"), flatten(lightPosition));
-        
+
         // Link to shininess of the material
         shininessLoc = gl.getUniformLocation(program, "shininess");
-      
+
         // Link to coefficient of reflection
         KaLoc = gl.getUniformLocation(program, "Ka");
         KdLoc = gl.getUniformLocation(program, "Kd");
         KsLoc = gl.getUniformLocation(program, "Ks");
-      
+
         render();
-      }
+    }
 
     var Ka = 1.0;
     var Kd = 1.0;
     var Ks = 1.0;
     var shininessVal = 80.0;
-    var ambientColor = vec3(0.0, 0.6, 1.0);
-    var diffuseColor = vec3(0.9, 0.5, 0.0);
-    var specularColor = vec3(1.0, 1.0, 1.0);
-    var materialAmbient = vec4(1.0, 0.0, 1.0, 1.0);
-    var materialDiffuse = vec4(1.0, 0.8, 0.0, 1.0);
-    var materialSpecular = vec4(1.0, 0.8, 0.0, 1.0);
+    // var ambientColor = vec3(0.0, 0.6, 1.0);
+    // var diffuseColor = vec3(0.9, 0.5, 0.0);
+    // var specularColor = vec3(1.0, 1.0, 1.0);
+    var materialAmbient = vec4(0.0, 0.6, 1.0, 1.0);
+    var materialDiffuse = vec4(0.9, 0.5, 0.0, 1.0);
+    var materialSpecular = vec4(1.0, 1.0, 1.0, 1.0);
     var materialShininess = 100.0;
-    var ambientProductLoc, diffuseProductLoc, specularProductLoc;
+    // var ambientProductLoc, diffuseProductLoc, specularProductLoc;
 
     // Set the initial values for the uniforms in the shader
     gl.uniform3fv(gl.getUniformLocation(program, "lightPosition"), flatten(lightPosition));
@@ -439,15 +439,16 @@ window.onload = function init() {
     gl.uniform1f(gl.getUniformLocation(program, "Kd"), Kd);
     gl.uniform1f(gl.getUniformLocation(program, "Ks"), Ks);
     gl.uniform1f(gl.getUniformLocation(program, "shininessVal"), shininessVal);
-    gl.uniform3fv(gl.getUniformLocation(program, "ambientColor"), flatten(ambientColor));
-    gl.uniform3fv(gl.getUniformLocation(program, "diffuseColor"), flatten(diffuseColor));
-    gl.uniform3fv(gl.getUniformLocation(program, "specularColor"), flatten(specularColor));
+    gl.uniform3fv(gl.getUniformLocation(program, "materialAmbient"), flatten(materialAmbient));
+    gl.uniform3fv(gl.getUniformLocation(program, "materialDiffuse"), flatten(materialDiffuse));
+    gl.uniform3fv(gl.getUniformLocation(program, "materialSpecular"), flatten(materialSpecular));
     gl.uniform1i(gl.getUniformLocation(program, "mode"), 1);  // Default mode is 1
     gl.uniform4fv(lightPositionLoc, flatten(lightPosition));
-  gl.uniform1f(shininessLoc, materialShininess);
+    gl.uniform1f(shininessLoc, materialShininess);
     gl.uniform1f(KaLoc, Ka);
     gl.uniform1f(KdLoc, Kd);
     gl.uniform1f(KsLoc, Ks);
+
     // =============================================================================
     // ======================Output Bubble Initialize Value=========================
     // =============================================================================
@@ -580,14 +581,14 @@ window.onload = function init() {
         // Get the current value of the slider
         var sliderValue = this.value;
         // Update the content of the output element with the slider value
-        var x =document.getElementById("ambientLightValue").textContent = sliderValue;
-        
+        var x = document.getElementById("ambientLightValue").textContent = sliderValue;
+
         lightAmbient = vec4(x, x, 0.1, 1.0);
         lightAmbientbp = vec4(x, x, 0.1, 1.0);
         ambientProduct = mult(lightAmbient, materialAmbient);
         ambientProductLoc = gl.uniform4fv(gl.getUniformLocation(program, "ambientProduct"), flatten(ambientProduct));
         gl.uniform4fv(gl.getUniformLocation(program, "ambientProduct"), flatten(ambientProduct));
-        updateLightSource();   
+        updateLightSource();
     });
 
     document.getElementById("diffuseLightSlider").addEventListener("input", function () {
@@ -684,7 +685,7 @@ window.onload = function init() {
         ambientColor = vec3(rgb.r / 255, rgb.g / 255, rgb.b / 255);
 
         // Use the updated ambientColor value in your rendering logic
-        gl.uniform3fv(gl.getUniformLocation(program, "ambientColor"), flatten(ambientColor));
+        gl.uniform3fv(gl.getUniformLocation(program, "ambientProduct"), flatten(ambientColor));
     });
 
     document.getElementById("colorSelectorDiffuse").addEventListener("input", function () {
@@ -698,7 +699,7 @@ window.onload = function init() {
         diffuseColor = vec3(rgb.r / 255, rgb.g / 255, rgb.b / 255);
 
         // Use the updated diffuseColor value in your rendering logic
-        gl.uniform3fv(gl.getUniformLocation(program, "diffuseColor"), flatten(diffuseColor));
+        gl.uniform3fv(gl.getUniformLocation(program, "diffuseProduct"), flatten(diffuseColor));
     });
 
     document.getElementById("colorSelectorSpecular").addEventListener("input", function () {
@@ -712,7 +713,7 @@ window.onload = function init() {
         specularColor = vec3(rgb.r / 255, rgb.g / 255, rgb.b / 255);
 
         // Use the updated specularColor value in your rendering logic
-        gl.uniform3fv(gl.getUniformLocation(program, "specularColor"), flatten(specularColor));
+        gl.uniform3fv(gl.getUniformLocation(program, "specularProduct"), flatten(specularColor));
     });
 
 

@@ -19,6 +19,71 @@
     <script src="assets/js/jquery-3.6.4.min.js"></script>
 
     <script id="vertex-shader" type="x-shader/x-vertex">
+        uniform int isDirectional; 
+        varying vec3 N, L, E, L2;
+        
+        uniform vec4 pointLightPosition;  // Position of point light
+        uniform vec3 pointLightColor;     // Color of point light
+        uniform vec3 directionalLightDirection;  // Direction of directional light
+        uniform vec3 directionalLightColor;      // Color of directional light
+  
+        precision mediump float;
+  
+        attribute vec4 vPosition;
+        attribute vec4 vColor;
+        attribute vec4 vNormal;
+  
+        varying vec4 color; // Color from the lighting calculations
+        varying vec4 fColor;
+        varying lowp vec4 vPos;
+  
+        uniform mat4 modelViewMatrix;
+        uniform mat4 projectionMatrix;
+        uniform vec4 lightPosition; // Light source position
+  
+        // Lighting
+        uniform vec4 ambientProduct;
+        uniform vec4 diffuseProduct;
+        uniform vec4 specularProduct;
+        uniform float shininess;
+        uniform float Ka, Kd, Ks;
+  
+        void main() {
+          fColor = vColor;
+  
+          //Lighting
+          vec3 pos = -(modelViewMatrix * vPosition).xyz;
+          if (isDirectional == 1) {
+            L = normalize(-lightPosition.xyz);
+        } else {
+            L = normalize(lightPosition.xyz - pos); 
+        }
+  
+          vec3 light = lightPosition.xyz;
+          
+          vec3 L = normalize(light - pos);
+           E = -pos;
+          vec3 N = normalize((modelViewMatrix * vNormal).xyz);
+  
+          // Diffrent diffuseProduct, specularProduct, shininess, etc;
+          vec3 H = normalize(L + E);
+          vec4 ambient = ambientProduct;
+          vec3 H2 = normalize(L2 + E);
+          float lambertian = max(dot(L, N), 0.0);
+          vec4 diffuse = lambertian * diffuseProduct;
+  
+          float specAngle = pow(max(dot(N, H), 0.0), shininess);
+          vec4 specular = specAngle * specularProduct;
+  
+          if (dot(L, N) < 0.0) specular = vec4(0.0, 0.0, 0.0, 1.0);
+          fColor = Ka * ambient + Kd * diffuse + Ks * specular;
+          fColor.a = 1.0;
+          gl_Position = projectionMatrix * modelViewMatrix * vPosition;
+          
+        }
+      </script>
+
+    <!-- <script id="vertex-shader" type="x-shader/x-vertex">
         attribute vec4 vPosition;
         attribute vec3 vNormal;
 
@@ -59,9 +124,9 @@
             
             gl_Position = projectionMatrix * vertPos4;
         }
-    </script>
+    </script> -->
 
-    <script id="fragment-shader" type="x-shader/x-fragment">
+    <!-- <script id="fragment-shader" type="x-shader/x-fragment">
         precision mediump float;
 
         varying vec3 normalInterp;  // Surface normal
@@ -117,7 +182,19 @@
             }
         }
 
-    </script>
+    </script> -->
+    <script id="fragment-shader" type="x-shader/x-fragment">
+        precision mediump float;
+  
+        varying lowp vec4 vPos;
+        varying vec4 fColor;
+  
+  
+        void main() {
+         
+          gl_FragColor = fColor;
+        }
+      </script>
 </head>
 
 <body>
