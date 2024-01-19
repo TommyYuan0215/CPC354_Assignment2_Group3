@@ -19,7 +19,6 @@
     <script src="assets/js/jquery-3.6.4.min.js"></script>
 
     <script id="vertex-shader" type="x-shader/x-vertex">
-        uniform int isDirectional; 
         varying vec3 N, L, E, L2;
         
         uniform vec4 pointLightPosition;  // Position of point light
@@ -70,8 +69,10 @@
             float specAngle = pow(max(dot(N, H), 0.0), shininess);
             vec4 specular = specAngle * specularProduct;
     
-            if (dot(L, N) < 0.0) specular = vec4(0.0, 0.0, 0.0, 1.0);
-    
+            if (dot(L, N) < 0.0) {
+                specular = vec4(0.0, 0.0, 0.0, 1.0);
+            }
+            
             // Output final color based on the rendering mode
             if (mode == 2) {
                 fColor = ambient;  // Only ambient

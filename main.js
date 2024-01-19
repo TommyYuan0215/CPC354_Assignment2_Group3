@@ -39,7 +39,6 @@ var instanceMatrix;
 var modelViewMatrixLoc;
 
 var vertices = [
-
     vec4(-0.5, -0.5, 0.5, 1.0),
     vec4(-0.5, 0.5, 0.5, 1.0),
     vec4(0.5, 0.5, 0.5, 1.0),
@@ -119,12 +118,10 @@ var lightSpecular = vec4(0.5, 0.5, 0.1, 1.0);
 // Variables used to link to vertex shader
 var lightPositionLoc;
 var KaLoc, KdLoc, KsLoc;
-var shininessLoc;
 
 var Ka = 1.0;
 var Kd = 1.0;
 var Ks = 1.0;
-var shininessVal = 80.0;
 var materialAmbient = vec4(0.0, 0.6, 1.0, 1.0);
 var materialDiffuse = vec4(0.9, 0.5, 0.0, 1.0);
 var materialSpecular = vec4(0.5, 0.5, 0.5, 1.0);
@@ -440,7 +437,6 @@ window.onload = function init() {
     gl.uniform1f(gl.getUniformLocation(program, "Ka"), Ka);
     gl.uniform1f(gl.getUniformLocation(program, "Kd"), Kd);
     gl.uniform1f(gl.getUniformLocation(program, "Ks"), Ks);
-    gl.uniform1f(gl.getUniformLocation(program, "shininessVal"), shininessVal);
     gl.uniform4fv(gl.getUniformLocation(program, "ambientProduct"), flatten(mult(lightAmbient, materialAmbient)));
     gl.uniform4fv(gl.getUniformLocation(program, "diffuseProduct"), flatten(mult(lightDiffuse, materialDiffuse)));
     gl.uniform4fv(gl.getUniformLocation(program, "specularProduct"), flatten(mult(lightSpecular, materialSpecular)));
