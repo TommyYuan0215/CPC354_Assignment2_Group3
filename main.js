@@ -696,6 +696,7 @@ window.onload = function init() {
     document.getElementById("shininessSlider").addEventListener("input", function () {
         // Get the current value of the slider
         var sliderValue = this.value;
+        materialShininess = sliderValue;
 
         // Update the content of the output element with the slider value
         document.getElementById("shininessValue").textContent = sliderValue;
