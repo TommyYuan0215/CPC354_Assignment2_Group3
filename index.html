@@ -26,62 +26,71 @@
         uniform vec3 pointLightColor;     // Color of point light
         uniform vec3 directionalLightDirection;  // Direction of directional light
         uniform vec3 directionalLightColor;      // Color of directional light
-  
+    
         precision mediump float;
-  
+    
         attribute vec4 vPosition;
         attribute vec4 vColor;
         attribute vec4 vNormal;
-  
+    
         varying vec4 color; // Color from the lighting calculations
         varying vec4 fColor;
         varying lowp vec4 vPos;
-  
+    
         uniform mat4 modelViewMatrix;
         uniform mat4 projectionMatrix;
         uniform vec4 lightPosition; // Light source position
-  
+    
         // Lighting
         uniform vec4 ambientProduct;
         uniform vec4 diffuseProduct;
         uniform vec4 specularProduct;
         uniform float shininess;
         uniform float Ka, Kd, Ks;
-  
+    
+        // Rendering mode
+        uniform int mode;
+    
         void main() {
-          fColor = vColor;
-  
-          //Lighting
-          vec3 pos = -(modelViewMatrix * vPosition).xyz;
-          if (isDirectional == 1) {
-            L = normalize(-lightPosition.xyz);
-        } else {
-            L = normalize(lightPosition.xyz - pos); 
+            vec3 pos = -(modelViewMatrix * vPosition).xyz;
+            if (isDirectional == 1) {
+                L = normalize(-lightPosition.xyz);
+            } else {
+                L = normalize(lightPosition.xyz - pos); 
+            }
+    
+            vec3 light = lightPosition.xyz;
+    
+            vec3 L = normalize(light - pos);
+            E = -pos;
+            vec3 N = normalize((modelViewMatrix * vNormal).xyz);
+    
+            vec3 H = normalize(L + E);
+            vec4 ambient = ambientProduct;
+            float lambertian = max(dot(L, N), 0.0);
+            vec4 diffuse = lambertian * diffuseProduct;
+    
+            float specAngle = pow(max(dot(N, H), 0.0), shininess);
+            vec4 specular = specAngle * specularProduct;
+    
+            if (dot(L, N) < 0.0) specular = vec4(0.0, 0.0, 0.0, 1.0);
+    
+            // Output final color based on the rendering mode
+            if (mode == 2) {
+                fColor = ambient;  // Only ambient
+            } else if (mode == 3) {
+                fColor = diffuse;  // Only diffuse
+            } else if (mode == 4) {
+                fColor = vec4(specular.rgb * specularProduct.rgb, 1.0);  // Only specular
+            } else {
+                fColor = Ka * ambient + Kd * diffuse + Ks * specular;  // Full lighting
+            }
+    
+            fColor.a = 1.0;
+            gl_Position = projectionMatrix * modelViewMatrix * vPosition;
         }
-  
-          vec3 light = lightPosition.xyz;
-          
-          vec3 L = normalize(light - pos);
-           E = -pos;
-          vec3 N = normalize((modelViewMatrix * vNormal).xyz);
-  
-          // Diffrent diffuseProduct, specularProduct, shininess, etc;
-          vec3 H = normalize(L + E);
-          vec4 ambient = ambientProduct;
-          vec3 H2 = normalize(L2 + E);
-          float lambertian = max(dot(L, N), 0.0);
-          vec4 diffuse = lambertian * diffuseProduct;
-  
-          float specAngle = pow(max(dot(N, H), 0.0), shininess);
-          vec4 specular = specAngle * specularProduct;
-  
-          if (dot(L, N) < 0.0) specular = vec4(0.0, 0.0, 0.0, 1.0);
-          fColor = Ka * ambient + Kd * diffuse + Ks * specular;
-          fColor.a = 1.0;
-          gl_Position = projectionMatrix * modelViewMatrix * vPosition;
-          
-        }
-      </script>
+    </script>
+    
 
     <!-- <script id="vertex-shader" type="x-shader/x-vertex">
         attribute vec4 vPosition;
@@ -188,11 +197,12 @@
   
         varying lowp vec4 vPos;
         varying vec4 fColor;
+
+        uniform int mode;   // Rendering mode
   
   
         void main() {
-         
-          gl_FragColor = fColor;
+            gl_FragColor = fColor;
         }
       </script>
 </head>

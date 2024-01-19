@@ -105,6 +105,61 @@ var modelViewLoc;
 
 var pointsArray = [];
 
+// Lighting Element
+var ambientProduct;
+var diffuseProduct;
+var specularProduct;
+
+// Set initial values for the light and material properties
+var lightPosition = vec4(1.0, 2.0, 3.0, 1.0);
+var lightAmbient = vec4(0.2, 0.2, 0.2, 1.0);
+var lightDiffuse = vec4(1.0, 1.0, 1.0, 1.0);
+var lightSpecular = vec4(1.0, 1.0, 1.0, 1.0);
+
+// Variables used to link to vertex shader
+var lightPositionLoc;
+var KaLoc, KdLoc, KsLoc;
+var isDirectional = true;
+var shininessLoc;
+
+var Ka = 1.0;
+var Kd = 1.0;
+var Ks = 1.0;
+var shininessVal = 80.0;
+var materialAmbient = vec4(0.0, 0.6, 1.0, 1.0);
+var materialDiffuse = vec4(0.9, 0.5, 0.0, 1.0);
+var materialSpecular = vec4(1.0, 1.0, 1.0, 1.0);
+var materialShininess = 80.0;
+
+// Variables used to link to vertex shader
+var lightPositionLoc;
+var ambientProductLoc, diffuseProductLoc, specularProductLoc;
+var shininessLoc;
+
+function updateLightSource() {
+    if (isDirectional) {
+        // Set up directional light properties
+        gl.uniform3fv(lightPositionLoc, vec3(1.0, 1.0, 1.0));
+    } else {
+        // Set up point light properties
+        gl.uniform3fv(lightPositionLoc, vec3(0.0, 0.0, 1.0));
+    }
+
+    gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"), flatten(lightPosition));
+
+    // Link to shininess of the material
+    shininessLoc = gl.getUniformLocation(program, "shininess");
+
+    // Link to coefficient of reflection
+    KaLoc = gl.getUniformLocation(program, "Ka");
+    KdLoc = gl.getUniformLocation(program, "Kd");
+    KsLoc = gl.getUniformLocation(program, "Ks");
+
+    render();
+}
+
+
+
 //-------------------------------------------
 
 function scale4(a, b, c) {
@@ -385,53 +440,6 @@ window.onload = function init() {
     var vPosition = gl.getAttribLocation(program, "vPosition");
     gl.vertexAttribPointer(vPosition, 4, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(vPosition);
-
-    // Set initial values for the light and material properties
-    var lightPosition = vec4(1.0, 2.0, 3.0, 1.0);
-    var lightAmbient = vec4(0.2, 0.2, 0.2, 1.0);
-    var lightDiffuse = vec4(1.0, 1.0, 1.0, 1.0);
-    var lightSpecular = vec4(1.0, 1.0, 1.0, 1.0);
-    // Variables used to link to vertex shader
-    var lightPositionLoc;
-    var KaLoc, KdLoc, KsLoc;
-    var isDirectional = true;
-
-    var shininessLoc;
-
-    function updateLightSource() {
-        if (isDirectional) {
-            // Set up directional light properties
-            gl.uniform3fv(lightPositionLoc, vec3(1.0, 1.0, 1.0));
-        } else {
-            // Set up point light properties
-            gl.uniform3fv(lightPositionLoc, vec3(0.0, 0.0, 1.0));
-        }
-
-        gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"), flatten(lightPosition));
-
-        // Link to shininess of the material
-        shininessLoc = gl.getUniformLocation(program, "shininess");
-
-        // Link to coefficient of reflection
-        KaLoc = gl.getUniformLocation(program, "Ka");
-        KdLoc = gl.getUniformLocation(program, "Kd");
-        KsLoc = gl.getUniformLocation(program, "Ks");
-
-        render();
-    }
-
-    var Ka = 1.0;
-    var Kd = 1.0;
-    var Ks = 1.0;
-    var shininessVal = 80.0;
-    // var ambientColor = vec3(0.0, 0.6, 1.0);
-    // var diffuseColor = vec3(0.9, 0.5, 0.0);
-    // var specularColor = vec3(1.0, 1.0, 1.0);
-    var materialAmbient = vec4(0.0, 0.6, 1.0, 1.0);
-    var materialDiffuse = vec4(0.9, 0.5, 0.0, 1.0);
-    var materialSpecular = vec4(1.0, 1.0, 1.0, 1.0);
-    var materialShininess = 100.0;
-    // var ambientProductLoc, diffuseProductLoc, specularProductLoc;
 
     // Set the initial values for the uniforms in the shader
     gl.uniform3fv(gl.getUniformLocation(program, "lightPosition"), flatten(lightPosition));
