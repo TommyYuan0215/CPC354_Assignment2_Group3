@@ -441,9 +441,9 @@ window.onload = function init() {
     gl.uniform1f(gl.getUniformLocation(program, "Kd"), Kd);
     gl.uniform1f(gl.getUniformLocation(program, "Ks"), Ks);
     gl.uniform1f(gl.getUniformLocation(program, "shininessVal"), shininessVal);
-    gl.uniform4fv(gl.getUniformLocation(program, "ambientProduct"), flatten(mult(lightAmbient,materialAmbient)));
-    gl.uniform4fv(gl.getUniformLocation(program, "diffuseProduct"), flatten(mult(lightDiffuse,materialDiffuse)));
-    gl.uniform4fv(gl.getUniformLocation(program, "specularProduct"), flatten(mult(lightSpecular,materialSpecular)));
+    gl.uniform4fv(gl.getUniformLocation(program, "ambientProduct"), flatten(mult(lightAmbient, materialAmbient)));
+    gl.uniform4fv(gl.getUniformLocation(program, "diffuseProduct"), flatten(mult(lightDiffuse, materialDiffuse)));
+    gl.uniform4fv(gl.getUniformLocation(program, "specularProduct"), flatten(mult(lightSpecular, materialSpecular)));
     gl.uniform1i(gl.getUniformLocation(program, "mode"), 1);  // Default mode is 1
     gl.uniform4fv(lightPositionLoc, flatten(lightPosition));
     gl.uniform1f(shininessLoc, materialShininess);
@@ -673,21 +673,21 @@ window.onload = function init() {
     document.getElementById("colorSelectorAmbient").addEventListener("input", function () {
         var colorValue = this.value;
         materialAmbient = hexToRgb(colorValue);
-        ambientProduct = mult(lightAmbient,materialAmbient);
+        ambientProduct = mult(lightAmbient, materialAmbient);
         gl.uniform4fv(gl.getUniformLocation(program, "ambientProduct"), flatten(ambientProduct));
     });
 
     document.getElementById("colorSelectorDiffuse").addEventListener("input", function () {
         var colorValue = this.value;
         materialDiffuse = hexToRgb(colorValue);
-        diffuseProduct = mult(lightAmbient,materialDiffuse);
+        diffuseProduct = mult(lightAmbient, materialDiffuse);
         gl.uniform4fv(gl.getUniformLocation(program, "diffuseProduct"), flatten(diffuseProduct));
     });
 
     document.getElementById("colorSelectorSpecular").addEventListener("input", function () {
         var colorValue = this.value;
         materialSpecular = hexToRgb(colorValue);
-        specularProduct = mult(lightAmbient,materialSpecular);
+        specularProduct = mult(lightAmbient, materialSpecular);
         gl.uniform4fv(gl.getUniformLocation(program, "specularProduct"), flatten(specularProduct));
     });
 
@@ -788,8 +788,8 @@ function hexToRgb(hex) {
     var r = parseInt(hex.substring(1, 3), 16) / 255;
     var g = parseInt(hex.substring(3, 5), 16) / 255;
     var b = parseInt(hex.substring(5, 7), 16) / 255;
-    return vec4(r, g, b, 1.0); 
-  }
+    return vec4(r, g, b, 1.0);
+}
 
 // =============================================================================
 // =============================Rendering Function==============================
