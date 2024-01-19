@@ -112,9 +112,9 @@ var specularProduct;
 
 // Set initial values for the light and material properties
 var lightPosition = vec4(1.0, 2.0, 3.0, 1.0);
-var lightAmbient = vec4(0.2, 0.2, 0.2, 1.0);
-var lightDiffuse = vec4(0.0, 0.0, 0.0, 1.0);
-var lightSpecular = vec4(1.0, 1.0, 1.0, 1.0);
+var lightAmbient = vec4(0.5, 0.5, 0.1, 1.0);
+var lightDiffuse = vec4(0.7, 0.7, 0.1, 1.0);
+var lightSpecular = vec4(0.5, 0.5, 0.1, 1.0);
 
 // Variables used to link to vertex shader
 var lightPositionLoc;
@@ -127,7 +127,7 @@ var Ks = 1.0;
 var shininessVal = 80.0;
 var materialAmbient = vec4(0.0, 0.6, 1.0, 1.0);
 var materialDiffuse = vec4(0.9, 0.5, 0.0, 1.0);
-var materialSpecular = vec4(1.0, 1.0, 1.0, 1.0);
+var materialSpecular = vec4(0.5, 0.5, 0.5, 1.0);
 var materialShininess = 80.0;
 
 // Variables used to link to vertex shader
@@ -436,7 +436,7 @@ window.onload = function init() {
 
 
     // Set the initial values for the uniforms in the shader
-    gl.uniform3fv(gl.getUniformLocation(program, "lightPosition"), flatten(lightPosition));
+    gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"), flatten(lightPosition));
     gl.uniform1f(gl.getUniformLocation(program, "Ka"), Ka);
     gl.uniform1f(gl.getUniformLocation(program, "Kd"), Kd);
     gl.uniform1f(gl.getUniformLocation(program, "Ks"), Ks);
@@ -475,9 +475,9 @@ window.onload = function init() {
     document.getElementById("lightxValue").textContent = 1;
     document.getElementById("lightyValue").textContent = 1;
     document.getElementById("lightzValue").textContent = -1;
-    document.getElementById("ambientLightValue").textContent = 1.0;
-    document.getElementById("diffuseLightValue").textContent = 1.0;
-    document.getElementById("specularLightValue").textContent = 1.0;
+    document.getElementById("ambientLightValue").textContent = 0.5
+    document.getElementById("diffuseLightValue").textContent = 0.7;
+    document.getElementById("specularLightValue").textContent = 0.5;
     document.getElementById("cameraXValue").textContent = 0;
     document.getElementById("cameraYValue").textContent = 0;
     document.getElementById("cameraZValue").textContent = 10;

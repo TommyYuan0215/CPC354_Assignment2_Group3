@@ -78,7 +78,7 @@
             } else if (mode == 3) {
                 fColor = diffuse;  // Only diffuse
             } else if (mode == 4) {
-                fColor = vec4(specular.rgb * specularProduct.rgb, 1.0);  // Only specular
+                fColor = specular;  // Only specular
             } else {
                 fColor = Ka * ambient + Kd * diffuse + Ks * specular;  // Full lighting
             }
@@ -398,7 +398,7 @@
                                     class="control_slider_bubble" id="ambientLightValue"></output>
                                 <br>
                                 <input id="ambientLightSlider" class="control_silder" type="range" min="0" max="1"
-                                    step="0.1" value="1.0">
+                                    step="0.1" value="0.5">
 
 
                                 <!-- Diffuse Light Slider -->
@@ -406,7 +406,7 @@
                                     class="control_slider_bubble" id="diffuseLightValue"></output>
                                 <br>
                                 <input id="diffuseLightSlider" class="control_silder" type="range" min="0" max="1"
-                                    step="0.1" value="1.0">
+                                    step="0.1" value="0.7">
 
 
                                 <!-- Specular Light Slider -->
@@ -414,7 +414,7 @@
                                     class="control_slider_bubble" id="specularLightValue"></output>
                                 <br>
                                 <input id="specularLightSlider" class="control_silder" type="range" min="0" max="1"
-                                    step="0.1" value="1.0">
+                                    step="0.1" value="0.5">
 
                                 <hr>
                                 <h6 class="text-center"><b>Light Source</b></h6>
