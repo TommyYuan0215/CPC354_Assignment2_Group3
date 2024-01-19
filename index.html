@@ -67,6 +67,11 @@
         varying vec3 normalInterp;  // Surface normal
         varying vec3 vertPos;       // Vertex position
 
+        uniform vec4 pointLightPosition;  // Position of point light
+        uniform vec3 pointLightColor;     // Color of point light
+        uniform vec3 directionalLightDirection;  // Direction of directional light
+        uniform vec3 directionalLightColor;      // Color of directional light
+
         varying vec3 normal;
         varying vec4 lightPosition;
         varying vec4 ambientProduct, diffuseProduct, specularProduct;
@@ -81,9 +86,11 @@
         uniform float shininessVal; // Shininess
 
         void main() {
+            //vec3 pos = -(modelViewMatrix * vPosition).xyz;
+            
             vec3 N = normalize(normalInterp);
             vec3 L = normalize(lightPosition.xyz - vertPos);
-
+            
             // Lambert's cosine law
             float lambertian = max(dot(N, L), 0.0);
 
