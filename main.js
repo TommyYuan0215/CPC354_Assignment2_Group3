@@ -1,3 +1,7 @@
+// =============================================================================
+// ======================= Splash Screen Init===================================
+// =============================================================================
+
 document.addEventListener("DOMContentLoaded", function () {
     // Select the splash screen element
     var splashScreen = document.getElementById("splash-screen");
@@ -12,7 +16,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
 })
 
-// We use figure.js from textbook to modify file.
+
+// =============================================================================
+// ======================= Variable Initialize==================================
+// =============================================================================
+
+// Disclaimer:
+// 1. We use figure.js from angelChapter10 source code as the main source code for hierarchical model.
+// 2. We also applied the phong shading code from the external website https://www.cs.toronto.edu/~jacobson/phong-demo/ 
+//    as inspiration for the vertex shader and fragment shader.
+
 
 var canvas;
 var gl;
@@ -102,8 +115,9 @@ function scale4(a, b, c) {
     return result;
 }
 
-//--------------------------------------------
-
+// =============================================================================
+// =====================Hierarchical Model Initialize Phrase====================
+// =============================================================================
 
 function createNode(transform, render, sibling, child) {
     var node = {
@@ -200,6 +214,10 @@ function initNodes(Id) {
     }
 
 }
+
+// =============================================================================
+// =========================Hierarchical Model Function=========================
+// =============================================================================
 
 function traverse(Id) {
 
@@ -329,6 +347,9 @@ function cube() {
     quad(5, 4, 0, 1);
 }
 
+// =============================================================================
+// =========================Initialize Function=================================
+// =============================================================================
 
 window.onload = function init() {
 
@@ -372,9 +393,9 @@ window.onload = function init() {
     var Ks = 1.0;
     var shininessVal = 80.0;
     var ambientColor = vec3(0.0, 0.6, 1.0);
-    var diffuseColor = vec3(0.9, 0.5, 0.0); 
+    var diffuseColor = vec3(0.9, 0.5, 0.0);
     var specularColor = vec3(1.0, 1.0, 1.0);
-    
+
     // Set the initial values for the uniforms in the shader
     gl.uniform3fv(gl.getUniformLocation(program, "lightPosition"), flatten(lightPosition));
     gl.uniform1f(gl.getUniformLocation(program, "Ka"), Ka);
@@ -386,6 +407,9 @@ window.onload = function init() {
     gl.uniform3fv(gl.getUniformLocation(program, "specularColor"), flatten(specularColor));
     gl.uniform1i(gl.getUniformLocation(program, "mode"), 1);  // Default mode is 1
 
+    // =============================================================================
+    // ======================Output Bubble Initialize Value=========================
+    // =============================================================================
 
     // Initial State for each of the output value 
     document.getElementById("head1_output").textContent = 0;
@@ -415,7 +439,10 @@ window.onload = function init() {
     document.getElementById("bgBrightnessOutput").textContent = 50;
 
 
-    // On change function for each of the hierarchical model
+    // =============================================================================
+    // ======================Hierarchical Event Listener============================
+    // =============================================================================
+
     document.getElementById("slider1").oninput = function () {
         SliderValue = event.srcElement.value;
         theta[head1Id] = SliderValue;
@@ -486,7 +513,7 @@ window.onload = function init() {
         initNodes(head2Id);
     };
 
-    document.getElementById("slider11").oninput  = function () {
+    document.getElementById("slider11").oninput = function () {
         SliderValue = event.srcElement.value - 400;
         theta[GLOBAL_X_COORDINATE] = SliderValue;
         gl.viewport(0 + theta[GLOBAL_X_COORDINATE], 0 + theta[GLOBAL_Y_COORDINATE], canvas.width, canvas.height);
@@ -494,7 +521,7 @@ window.onload = function init() {
         initNodes(torsoId);
     };
 
-    document.getElementById("slider12").oninput  = function () {
+    document.getElementById("slider12").oninput = function () {
         SliderValue = event.srcElement.value - 400;
         theta[GLOBAL_Y_COORDINATE] = SliderValue;
         gl.viewport(0 + theta[GLOBAL_X_COORDINATE], 0 + theta[GLOBAL_Y_COORDINATE], canvas.width, canvas.height);
@@ -502,15 +529,20 @@ window.onload = function init() {
         initNodes(torsoId);
     };
 
-    // ---------- Light Source ----------
-    document.getElementById("brightnessSlider").oninput = function () {
-          const brightnessValue = this.value;
-          var brightnessLevel = brightnessValue / 100;
-          var canvasContainer = document.getElementById("canvasContainer");
 
-          canvasContainer.style.setProperty('--brightness-level', brightnessLevel);
-          document.getElementById("bgBrightnessOutput").textContent = brightnessValue;
-        };
+    // =============================================================================
+    // =======================Light Source Event Listener===========================
+    // =============================================================================
+
+
+    document.getElementById("brightnessSlider").oninput = function () {
+        const brightnessValue = this.value;
+        var brightnessLevel = brightnessValue / 100;
+        var canvasContainer = document.getElementById("canvasContainer");
+
+        canvasContainer.style.setProperty('--brightness-level', brightnessLevel);
+        document.getElementById("bgBrightnessOutput").textContent = brightnessValue;
+    };
 
     document.getElementById("ambientReflectionSlider").addEventListener("input", function () {
         // Get the current value of the slider
@@ -554,9 +586,10 @@ window.onload = function init() {
         gl.uniform1f(gl.getUniformLocation(program, "Ks"), Ks);
     });
 
-    // ----------- Material Properties Control --------
+    // =============================================================================
+    // ======================Material Properties Event Listener=====================
+    // =============================================================================
 
-    // Ambient color input
     document.getElementById("colorSelectorAmbient").addEventListener("input", function () {
         // Get the current value of the color input
         var colorValue = this.value;
@@ -633,7 +666,10 @@ window.onload = function init() {
         document.getElementById("lightzValue").textContent = sliderValue;
     });
 
-    // -------- View & Shading --------
+    // =============================================================================
+    // ======================View & Shading Event Listener==========================
+    // =============================================================================
+
     document.getElementById("cameraXSlider").addEventListener("input", function () {
         // Get the current value of the slider
         var sliderValue = this.value;
@@ -670,6 +706,10 @@ window.onload = function init() {
     render();
 }
 
+// =============================================================================
+// ======================Helper Function for Assignment=========================
+// =============================================================================
+
 // Function to update the camera and trigger a re-render
 function updateCamera() {
     modelViewMatrix = lookAt(eye, at, up);
@@ -691,8 +731,14 @@ function hexToRgb(hex) {
     return { r, g, b };
 }
 
+// =============================================================================
+// =============================Rendering Function==============================
+// =============================================================================
+
 var render = function () {
     gl.clear(gl.COLOR_BUFFER_BIT);
     traverse(torsoId);
     requestAnimFrame(render);
 }
+
+// =============================================================================
