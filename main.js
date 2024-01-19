@@ -795,7 +795,7 @@ function hexToRgb(hex) {
 // =============================================================================
 
 var render = function () {
-    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     traverse(torsoId);
     requestAnimFrame(render);
 

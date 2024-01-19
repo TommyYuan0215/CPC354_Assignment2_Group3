@@ -139,7 +139,7 @@ body {
   background-color: #f1f1f1;
   overflow-x: hidden;
   overflow-y: scroll;
-  z-index: 3;
+  z-index: 10;
 }
 
 /*speed control function*/
@@ -240,7 +240,7 @@ canvas {
   width: 100%;
   padding: 5px 0;
   background: radial-gradient(circle at 12.8% 28%, rgb(206, 155, 243) 0%, rgb(142, 229, 247) 90%);
-  z-index: 3;
+  z-index: 11;
 }
 
 .footer-basic ul {
